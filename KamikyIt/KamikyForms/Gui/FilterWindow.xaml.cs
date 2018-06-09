@@ -153,8 +153,8 @@ namespace KamikyForms.Gui
 				}
 			}
 
-			online.SelectedIndex = CurrentFilter.IsOnline.HasValue ? (CurrentFilter.IsOnline.Value ? 1 : 0) : 0;
-			foto.SelectedIndex = CurrentFilter.HasPhoto.HasValue ? (CurrentFilter.HasPhoto.HasValue ? 1 : 0) : 0;
+			conline.IsChecked = CurrentFilter.IsOnline;
+			cfoto.IsChecked = CurrentFilter.HasPhoto;
 
 			sort.SelectedIndex = (int)CurrentFilter.SortBy - 1;
 			minage.Text = CurrentFilter.Years != null ? CurrentFilter.Years.Min.ToString() : "0";
@@ -294,29 +294,12 @@ namespace KamikyForms.Gui
 
 		public void getPhoto()
 		{
-			if (cfoto.IsChecked == false) return;
-			if (foto.SelectedIndex == 0)
-			{
-				filter.HasPhoto = true;
-			}
-			else
-			{
-				filter.HasPhoto = false;
-			}
+			filter.HasPhoto = cfoto.IsChecked;
 		}
 
 		public void getOnline()
 		{
-			if (conline.IsChecked == false) return;
-			if (online.SelectedIndex == 0)
-			{
-				filter.IsOnline = true;
-			}
-			else
-			{
-				filter.IsOnline = false;
-
-			}
+			filter.IsOnline = conline.IsChecked;
 		}
 
 		public void getFamily()
@@ -359,87 +342,6 @@ namespace KamikyForms.Gui
 		{
 			if (coffcet.IsChecked == false) return;
 			filter.Offcet = Convert.ToInt32(offcet.Text);
-
-		}
-
-		private void oncheckChanged(object sender, RoutedEventArgs e)
-		{
-			CheckBox ch = sender as CheckBox;
-			String tag = ch.Tag.ToString();
-			if (tag == "gender")
-			{
-				gender.IsEnabled = ch.IsChecked == true;
-			}
-			if (tag == "minage")
-			{
-				minage.IsEnabled = ch.IsChecked == true;
-			}
-
-			if (tag == "maxage")
-			{
-				maxage.IsEnabled = ch.IsChecked == true;
-			}
-
-			if (tag == "country")
-			{
-				country.IsEnabled = ch.IsChecked == true;
-			}
-
-			if (tag == "city")
-			{
-				city.IsEnabled = ch.IsChecked == true;
-			}
-
-			if (tag == "family")
-			{
-				family.IsEnabled = ch.IsChecked == true;
-			}
-
-			if (tag == "online")
-			{
-				online.IsEnabled = ch.IsChecked == true;
-			}
-
-			if (tag == "friendmin")
-			{
-				friendmin.IsEnabled = ch.IsChecked == true;
-			}
-
-			if (tag == "friendmax")
-			{
-				friendmax.IsEnabled = ch.IsChecked == true;
-			}
-
-			if (tag == "subsmin")
-			{
-				subsmin.IsEnabled = ch.IsChecked == true;
-			}
-
-
-			if (tag == "subsmax")
-			{
-				subsmax.IsEnabled = ch.IsChecked == true;
-			}
-
-			if (tag == "postmin")
-			{
-				postmin.IsEnabled = ch.IsChecked == true;
-			}
-
-			if (tag == "postmax")
-			{
-				postmax.IsEnabled = ch.IsChecked == true;
-			}
-
-			if (tag == "sort")
-			{
-				sort.IsEnabled = ch.IsChecked == true;
-			}
-
-			if (tag == "offcet")
-			{
-				offcet.IsEnabled = ch.IsChecked == true;
-			}
 
 		}
 

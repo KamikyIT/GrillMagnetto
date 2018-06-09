@@ -18,24 +18,12 @@ namespace ApiWrapper.Core
 {
     public static class SearchInstrument
     {
+	    private static List<string> Bans;
+
         static SearchInstrument()
         {
-
-            //api = VkNet.Shared.Api.GetInstance();
-
-            //api.Authorize(new ApiAuthParams
-            //{
-            //	ApplicationId = 6394527,
-            //	Login = "1",
-            //	Password = "2",
-            //	Settings = Settings.All,
-            //	TwoFactorAuthorization = () =>
-            //	{
-            //		Console.WriteLine("Enter Code:");
-            //		return Console.ReadLine();
-            //	}
-            //});
-        }
+            Bans = FileParser.getBans();
+		}
 
         public static ApiInstrumentEnum ApiInstrumentEnum;
         public static string ApiVersion;
@@ -60,23 +48,9 @@ namespace ApiWrapper.Core
                 Count = 1000,
                 Fields = ProfileFields.All,
             });
-            foreach (User p in peoples)
-            {
-                //Console.WriteLine(p.Domain);
-                //Console.WriteLine("==============================");
-                //Console.WriteLine(p.FirstName + " " + p.LastName);
-                //Console.WriteLine(p.Photo100.AbsolutePath);
-                //Console.WriteLine(p.Photo200.AbsolutePath);
-                //Console.WriteLine(p.Photo200Orig.AbsolutePath);
-                //Console.WriteLine(p.Photo400Orig.AbsolutePath);
-                //Console.WriteLine(p.PhotoMaxOrig.AbsolutePath);
-                //Console.WriteLine("==============================");
-            }
+
             //bans
-            List<String> bans = FileParser.getBans();
-            List<User> bans_users = peoples.Where(o => !bans.Contains(o.Domain)).ToList();
-
-
+            List<User> bans_users = peoples.Where(o => !Bans.Contains(o.Domain)).ToList();
 
             //онлайна
             List<User> onlines = bans_users.Where(o => o.Online == true && o.IsFriend == false && o.Photo200 != null).ToList();
@@ -185,8 +159,11 @@ namespace ApiWrapper.Core
 
             sb.Append(string.Format("params[sex]={0}&", (int)filter.Sex));
 
-            sb.Append(string.Format("params[online]={0}=&", filter.IsOnline ? 1 : 0));
-            sb.Append(string.Format("params[has_photo]={0}=&", filter.IsOnline ? 1 : 0));
+			if (filter.IsOnline.HasValue)
+				sb.Append(string.Format("params[online]={0}=&", filter.IsOnline.Value ? 1 : 0));
+
+			if (filter.HasPhoto.HasValue)
+				sb.Append(string.Format("params[has_photo]={0}=&", filter.HasPhoto.Value ? 1 : 0));
 
             sb.Append(string.Format("params[v]={0}", ApiVersion));
 
@@ -280,14 +257,14 @@ namespace ApiWrapper.Core
         public DateTime RegistrationDate { get; set; }
 
         // Сейчас онлайн
-        public bool IsOnline { get; set; }
+        public bool? IsOnline { get; set; }
 
 
         //сортировка по популярности
         public ProfileSort profileSort { get; set; }
 
         // С фото
-        public bool HasPhoto { get; set; }
+        public bool? HasPhoto { get; set; }
 
         // Список групп
         public GroupsSearchInfo GroupsInfo { get; set; }
