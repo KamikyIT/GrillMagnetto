@@ -153,13 +153,13 @@ namespace KamikyForms.Gui
 				}
 			}
 
-			online.SelectedIndex = CurrentFilter.IsOnline.HasValue? (CurrentFilter.IsOnline.Value ? 1 : 0) : 0;
+			online.SelectedIndex = CurrentFilter.IsOnline.HasValue ? (CurrentFilter.IsOnline.Value ? 1 : 0) : 0;
 			foto.SelectedIndex = CurrentFilter.HasPhoto.HasValue ? (CurrentFilter.HasPhoto.HasValue ? 1 : 0) : 0;
 
 			sort.SelectedIndex = (int)CurrentFilter.SortBy - 1;
-			minage.Text = CurrentFilter.Years != null? CurrentFilter.Years.Min.ToString() : "0";
+			minage.Text = CurrentFilter.Years != null ? CurrentFilter.Years.Min.ToString() : "0";
 			maxage.Text = CurrentFilter.Years != null ? CurrentFilter.Years.Max.ToString() : "0";
-			friendmin.Text = CurrentFilter.FriendsCount != null? CurrentFilter.FriendsCount.Min.ToString() : "0";
+			friendmin.Text = CurrentFilter.FriendsCount != null ? CurrentFilter.FriendsCount.Min.ToString() : "0";
 			friendmax.Text = CurrentFilter.FriendsCount != null ? CurrentFilter.FriendsCount.Max.ToString() : "0";
 			subsmin.Text = CurrentFilter.SubsCount != null ? CurrentFilter.SubsCount.Min.ToString() : "0";
 			subsmax.Text = CurrentFilter.SubsCount != null ? CurrentFilter.SubsCount.Max.ToString() : "0";
@@ -169,311 +169,352 @@ namespace KamikyForms.Gui
 		}
 
 		private void onTest(object sender, RoutedEventArgs e)
-        {
-            var peoples = SearchInstrument.getPersons(filter);
-            MessageBox.Show(peoples[0].ToString());
+		{
+			var peoples = SearchInstrument.getPersons(filter);
+			MessageBox.Show(peoples[0].ToString());
 
-            return;
+			return;
 
-        }
+		}
 
-        public void getPostMin()
-        {
-            if (cpostmin.IsChecked == false) return;
-            filter.PostMin = Convert.ToInt32(postmin.Text);
-        }
+		public void getPostMin()
+		{
+			filter.PostMin = 0;
 
-        public void getPostMax()
-        {
-            if (cpostmax.IsChecked == false) return;
-            filter.PostMax = Convert.ToInt32(postmax.Text);
-        }
+			if (cpostmin.IsChecked == false) return;
 
+			var val = 0;
 
-        public void getSubsMin()
-        {
-            if (csubsmin.IsChecked == false) return;
-            filter.SubsMin = Convert.ToInt32(subsmin.Text);
-        }
+			if (int.TryParse(postmin.Text, out val))
+				filter.PostMin = Convert.ToInt32(postmin.Text);
+		}
 
-        public void getSubsMax()
-        {
-            if (csubsmax.IsChecked == false) return;
-            filter.SubsMax = Convert.ToInt32(subsmax.Text);
-        }
+		public void getPostMax()
+		{
+			filter.PostMax = 0;
 
+			if (cpostmax.IsChecked == false) return;
 
-        public void getFriendMin()
-        {
-            if (cfriendmin.IsChecked == false) return;
-            filter.FriendMin = Convert.ToInt32(friendmin.Text);
-        }
+			var val = 0;
 
-        public void getFriendMax()
-        {
-            if (cfriendmax.IsChecked == false) return;
-            filter.FriendMax = Convert.ToInt32(friendmax.Text);
-        }
+			if (int.TryParse(postmax.Text, out val))
+				filter.PostMax = Convert.ToInt32(postmax.Text);
+		}
 
-        public void getMinAge()
-        {
-	        filter.MinAge = 0;
+		public void getSubsMin()
+		{
+			filter.SubsMin = 0;
+
+			if (csubsmin.IsChecked == false) return;
+
+			var val = 0;
+
+			if (int.TryParse(subsmin.Text, out val))
+				filter.SubsMin = Convert.ToInt32(subsmin.Text);
+		}
+
+		public void getSubsMax()
+		{
+			filter.SubsMax = 0;
+
+			if (csubsmax.IsChecked == false) return;
+
+			var val = 0;
+
+			if (int.TryParse(subsmax.Text, out val))
+				filter.SubsMax = Convert.ToInt32(subsmax.Text);
+		}
+
+		public void getFriendMin()
+		{
+			filter.FriendMin = 0;
+
+			if (cfriendmin.IsChecked == false) return;
+
+			var val = 0;
+
+			if (int.TryParse(friendmin.Text, out val))
+				filter.FriendMin = Convert.ToInt32(friendmin.Text);
+		}
+
+		public void getFriendMax()
+		{
+			filter.FriendMax = 0;
+
+			if (cfriendmax.IsChecked == false) return;
+
+			var val = 0;
+
+			if (int.TryParse(friendmax.Text, out val))
+				filter.FriendMax = Convert.ToInt32(friendmax.Text);
+		}
+
+		public void getMinAge()
+		{
+			filter.MinAge = 0;
 
 			if (cminage.IsChecked == false) return;
 
-			int val;
+			var val = 0;
+
 			if (int.TryParse(minage.Text, out val))
 				filter.MinAge = Convert.ToInt32(minage.Text);
-        }
+		}
 
-        public void getMaxAge()
-        {
-            if (cmaxage.IsChecked == false) return;
-            filter.MaxAge = Convert.ToInt32(maxage.Text);
+		public void getMaxAge()
+		{
+			filter.MaxAge = 0;
 
-        }
+			if (cmaxage.IsChecked == false) return;
 
-        public void getCountry()
-        {
-            if (ccoountry.IsChecked == false) return;
-            if (country.SelectedIndex == 0)
-            {
-                filter.CountryId = 1;
-            }
-        }
+			var val = 0;
 
-        public void getCity()
-        {
-            if (ccity.IsChecked == false) return;
-            if (city.SelectedIndex == 0)
-            {
-                filter.CityId = 157;
-            }
-        }
+			if (int.TryParse(maxage.Text, out val))
+				filter.MaxAge = Convert.ToInt32(maxage.Text);
 
-        public void getPhoto()
-        {
-            if (cfoto.IsChecked == false) return;
-            if (foto.SelectedIndex == 0)
-            {
-                filter.HasPhoto = true;
-            }
-            else
-            {
-                filter.HasPhoto = false;
-            }
-        }
+		}
 
-        public void getOnline()
-        {
-            if (conline.IsChecked == false) return;
-            if (online.SelectedIndex == 0)
-            {
-                filter.IsOnline = true;
-            }
-            else
-            {
-                filter.IsOnline = false;
+		public void getCountry()
+		{
+			if (ccoountry.IsChecked == false) return;
+			if (country.SelectedIndex == 0)
+			{
+				filter.CountryId = 1;
+			}
+		}
 
-            }
-        }
+		public void getCity()
+		{
+			if (ccity.IsChecked == false) return;
+			if (city.SelectedIndex == 0)
+			{
+				filter.CityId = 157;
+			}
+		}
 
-        public void getFamily()
-        {
-            if (cfamily.IsChecked == false) return;
-            filter.FamilyState = (FamilyState)ConvertBack(family);
-        }
+		public void getPhoto()
+		{
+			if (cfoto.IsChecked == false) return;
+			if (foto.SelectedIndex == 0)
+			{
+				filter.HasPhoto = true;
+			}
+			else
+			{
+				filter.HasPhoto = false;
+			}
+		}
 
-        public void getSex()
-        {
+		public void getOnline()
+		{
+			if (conline.IsChecked == false) return;
+			if (online.SelectedIndex == 0)
+			{
+				filter.IsOnline = true;
+			}
+			else
+			{
+				filter.IsOnline = false;
+
+			}
+		}
+
+		public void getFamily()
+		{
+			if (cfamily.IsChecked == false) return;
+			filter.FamilyState = (FamilyState)ConvertBack(family);
+		}
+
+		public void getSex()
+		{
 			filter.Sex = SexEnum.Any;
 
 			if (cgender.IsChecked == false) return;
-            if (gender.SelectedIndex == 0)
-            {
-                filter.Sex = SexEnum.Woman;
-            }
-            if (gender.SelectedIndex == 1)
-            {
-                filter.Sex = SexEnum.Man;
-            }
-        }
+			if (gender.SelectedIndex == 0)
+			{
+				filter.Sex = SexEnum.Woman;
+			}
+			if (gender.SelectedIndex == 1)
+			{
+				filter.Sex = SexEnum.Man;
+			}
+		}
 
-        public void getSort()
-        {
-            if (ssort.IsChecked == false) return;
-            if (sort.SelectedIndex == 0)
-            {
-                filter.profileSort = ProfileSort.date;
-            }
-            if (gender.SelectedIndex == 1)
-            {
-                filter.profileSort = ProfileSort.popular;
+		public void getSort()
+		{
+			if (ssort.IsChecked == false) return;
+			if (sort.SelectedIndex == 0)
+			{
+				filter.profileSort = ProfileSort.date;
+			}
+			if (gender.SelectedIndex == 1)
+			{
+				filter.profileSort = ProfileSort.popular;
 
-            }
+			}
 
-        }
+		}
 
-        public void getOffcet()
-        {
-            if (coffcet.IsChecked == false) return;
-            filter.Offcet = Convert.ToInt32(offcet.Text);
+		public void getOffcet()
+		{
+			if (coffcet.IsChecked == false) return;
+			filter.Offcet = Convert.ToInt32(offcet.Text);
 
-        }
+		}
 
-        private void oncheckChanged(object sender, RoutedEventArgs e)
-        {
-            CheckBox ch = sender as CheckBox;
-            String tag = ch.Tag.ToString();
-            if (tag == "gender")
-            {
-                gender.IsEnabled = ch.IsChecked == true;
-            }
-            if (tag == "minage")
-            {
-                minage.IsEnabled = ch.IsChecked == true;
-            }
+		private void oncheckChanged(object sender, RoutedEventArgs e)
+		{
+			CheckBox ch = sender as CheckBox;
+			String tag = ch.Tag.ToString();
+			if (tag == "gender")
+			{
+				gender.IsEnabled = ch.IsChecked == true;
+			}
+			if (tag == "minage")
+			{
+				minage.IsEnabled = ch.IsChecked == true;
+			}
 
-            if (tag == "maxage")
-            {
-                maxage.IsEnabled = ch.IsChecked == true;
-            }
+			if (tag == "maxage")
+			{
+				maxage.IsEnabled = ch.IsChecked == true;
+			}
 
-            if (tag == "country")
-            {
-                country.IsEnabled = ch.IsChecked == true;
-            }
+			if (tag == "country")
+			{
+				country.IsEnabled = ch.IsChecked == true;
+			}
 
-            if (tag == "city")
-            {
-                city.IsEnabled = ch.IsChecked == true;
-            }
+			if (tag == "city")
+			{
+				city.IsEnabled = ch.IsChecked == true;
+			}
 
-            if (tag == "family")
-            {
-                family.IsEnabled = ch.IsChecked == true;
-            }
+			if (tag == "family")
+			{
+				family.IsEnabled = ch.IsChecked == true;
+			}
 
-            if (tag == "online")
-            {
-                online.IsEnabled = ch.IsChecked == true;
-            }
+			if (tag == "online")
+			{
+				online.IsEnabled = ch.IsChecked == true;
+			}
 
-            if (tag == "friendmin")
-            {
-                friendmin.IsEnabled = ch.IsChecked == true;
-            }
+			if (tag == "friendmin")
+			{
+				friendmin.IsEnabled = ch.IsChecked == true;
+			}
 
-            if (tag == "friendmax")
-            {
-                friendmax.IsEnabled = ch.IsChecked == true;
-            }
+			if (tag == "friendmax")
+			{
+				friendmax.IsEnabled = ch.IsChecked == true;
+			}
 
-            if (tag == "subsmin")
-            {
-                subsmin.IsEnabled = ch.IsChecked == true;
-            }
+			if (tag == "subsmin")
+			{
+				subsmin.IsEnabled = ch.IsChecked == true;
+			}
 
 
-            if (tag == "subsmax")
-            {
-                subsmax.IsEnabled = ch.IsChecked == true;
-            }
+			if (tag == "subsmax")
+			{
+				subsmax.IsEnabled = ch.IsChecked == true;
+			}
 
-            if (tag == "postmin")
-            {
-                postmin.IsEnabled = ch.IsChecked == true;
-            }
+			if (tag == "postmin")
+			{
+				postmin.IsEnabled = ch.IsChecked == true;
+			}
 
-            if (tag == "postmax")
-            {
-                postmax.IsEnabled = ch.IsChecked == true;
-            }
+			if (tag == "postmax")
+			{
+				postmax.IsEnabled = ch.IsChecked == true;
+			}
 
-            if (tag == "sort")
-            {
-                sort.IsEnabled = ch.IsChecked == true;
-            }
+			if (tag == "sort")
+			{
+				sort.IsEnabled = ch.IsChecked == true;
+			}
 
-            if (tag == "offcet")
-            {
-                offcet.IsEnabled = ch.IsChecked == true;
-            }
+			if (tag == "offcet")
+			{
+				offcet.IsEnabled = ch.IsChecked == true;
+			}
 
-        }
+		}
 
-        public object ConvertBack(object value)
-        {
-            var str = (value as ComboBox).SelectionBoxItem.ToString();
+		public object ConvertBack(object value)
+		{
+			var str = (value as ComboBox).SelectionBoxItem.ToString();
 
-            switch (str)
-            {
-                case "не женат (не замужем)":
-                    return FamilyState.NotMarry;
-                case "встречается":
-                    return FamilyState.Dating;
-                case "помолвлен(-а)":
-                    return FamilyState.Betrothed;
-                case "женат (замужем)":
-                    return FamilyState.Marry;
-                case "всё сложно<":
-                    return FamilyState.AllHardShit;
-                case "в активном поиске":
-                    return FamilyState.ActiveSearch;
-                case "влюблен(-а)":
-                    return FamilyState.Loved;
-                case "в гражданском браке":
-                    return FamilyState.CivilMarry;
-                default:
-                    throw new Exception("Невозможно распарсить");
-            }
-        }
+			switch (str)
+			{
+				case "не женат (не замужем)":
+					return FamilyState.NotMarry;
+				case "встречается":
+					return FamilyState.Dating;
+				case "помолвлен(-а)":
+					return FamilyState.Betrothed;
+				case "женат (замужем)":
+					return FamilyState.Marry;
+				case "всё сложно<":
+					return FamilyState.AllHardShit;
+				case "в активном поиске":
+					return FamilyState.ActiveSearch;
+				case "влюблен(-а)":
+					return FamilyState.Loved;
+				case "в гражданском браке":
+					return FamilyState.CivilMarry;
+				default:
+					throw new Exception("Невозможно распарсить");
+			}
+		}
 
-        private void onSearch(object sender, RoutedEventArgs e)
-        {
-            filter = new SearchFilter();
-            getSex();
-            getMinAge();
-            getMaxAge();
-            getCountry();
-            getCity();
-            getFamily();
-            getOnline();
-            getFriendMin();
-            getFriendMax();
-            getSubsMin();
-            getSubsMax();
-            getPostMin();
-            getPostMax();
-            getOffcet();
-            getSort();
-            List<PersonModel> peoples = SearchInstrument.getPersons(filter);
-            persons = peoples;
-            UpdateUi();
+		private void onSearch(object sender, RoutedEventArgs e)
+		{
+			filter = new SearchFilter();
+			getSex();
+			getMinAge();
+			getMaxAge();
+			getCountry();
+			getCity();
+			getFamily();
+			getOnline();
+			getFriendMin();
+			getFriendMax();
+			getSubsMin();
+			getSubsMax();
+			getPostMin();
+			getPostMax();
+			getOffcet();
+			getSort();
+			List<PersonModel> peoples = SearchInstrument.getPersons(filter);
+			persons = peoples;
+			UpdateUi();
 
-        }
+		}
 
-        private void onSelect(object sender, RoutedEventArgs e)
-        {
-            PreparePersonsForm form = new PreparePersonsForm(persons);
-            var res = form.ShowDialog();
-            if (res == true)
-            {
-                choosenpersons = form.pl2;
-                UpdateUi();
-            }
-        }
+		private void onSelect(object sender, RoutedEventArgs e)
+		{
+			PreparePersonsForm form = new PreparePersonsForm(persons);
+			var res = form.ShowDialog();
+			if (res == true)
+			{
+				choosenpersons = form.pl2;
+				UpdateUi();
+			}
+		}
 
-        public void UpdateUi()
-        {
-            finded.Content = "Найдено : " + persons.Count;
-            chosen.Content = "Выбрано : " + choosenpersons.Count;
-        }
+		public void UpdateUi()
+		{
+			finded.Content = "Найдено : " + persons.Count;
+			chosen.Content = "Выбрано : " + choosenpersons.Count;
+		}
 
-        private void onApply(object sender, RoutedEventArgs e)
-        {
-            DialogResult = true;
-        }
+		private void onApply(object sender, RoutedEventArgs e)
+		{
+			DialogResult = true;
+		}
 
 
 		private void AllowNumbersTextBox(object sender, TextChangedEventArgs e)
