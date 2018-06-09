@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2010
+VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KamikyForms", "KamikyForms\KamikyForms.csproj", "{0EB7AB90-A0FD-4B93-9E31-DFCBB5909E86}"
 EndProject
@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigurationsProject", "Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VkNet.CoreProject", "VkNet.CoreProject\VkNet.CoreProject.csproj", "{7B26B2C0-7CE9-474B-9E16-F272AFC24127}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContractInterfaces", "..\VkWcfServer\ContractInterfaces\ContractInterfaces.csproj", "{F786D996-5C10-4DFD-B50B-385D4973DB82}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContractInterfaces", "ContractInterfaces\ContractInterfaces.csproj", "{F786D996-5C10-4DFD-B50B-385D4973DB82}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
