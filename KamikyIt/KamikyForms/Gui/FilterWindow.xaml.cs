@@ -168,14 +168,7 @@ namespace KamikyForms.Gui
 			offcet.Text = CurrentFilter.Offset.ToString();
 		}
 
-		private void onTest(object sender, RoutedEventArgs e)
-		{
-			var peoples = SearchInstrument.getPersons(filter);
-			MessageBox.Show(peoples[0].ToString());
-
-			return;
-
-		}
+		#region Set SearchFilter values
 
 		public void getPostMin()
 		{
@@ -344,6 +337,8 @@ namespace KamikyForms.Gui
 			filter.Offcet = Convert.ToInt32(offcet.Text);
 
 		}
+
+		#endregion
 
 		public object ConvertBack(object value)
 		{

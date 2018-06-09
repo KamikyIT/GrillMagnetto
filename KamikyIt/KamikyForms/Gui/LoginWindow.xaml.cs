@@ -19,6 +19,7 @@ using VkNet.Examples.ForChat;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using KamikyForms.WcfContractManager;
+using Microsoft.Win32;
 
 namespace KamikyForms.Gui
 {
@@ -60,6 +61,7 @@ namespace KamikyForms.Gui
 			_useServer = false;
 			_serverAddress = @"http://localhost:4000/IVkContract";
 
+			ReadFromRegistry();
 
 			LoginCommand = new RelayCommand(LoginExecute);
 		}
@@ -162,6 +164,8 @@ namespace KamikyForms.Gui
 				chatWindow.Show();
 			}
 
+			SaveToRegistry();
+
 			if (!UseServer)
 				return;
 
@@ -170,6 +174,32 @@ namespace KamikyForms.Gui
 			var exc = new Exception();
 
 			client.CreateNewLogin(Login, Password, "vk.com/" + userId.ToString(), exc);
+		}
+
+		private void ReadFromRegistry()
+		{
+			var key = Registry.CurrentUser.CreateSubKey("Software\\Borat2", true);
+
+			Login = (string)key.GetValue("Login");
+
+			Password = (string)key.GetValue("Password");
+
+			UseServer = key.GetValue("UseServer") == null ? false : bool.Parse(key.GetValue("UseServer").ToString());
+
+			key.Close();
+		}
+
+		private void SaveToRegistry()
+		{
+			var key = Registry.CurrentUser.CreateSubKey("Software\\Borat2", true);
+
+			key.SetValue("Login", Login);
+
+			key.SetValue("Password", Password);
+
+			key.SetValue("UseServer", UseServer);
+
+			key.Close();
 		}
 	}
 
