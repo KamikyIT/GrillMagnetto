@@ -168,13 +168,13 @@
 
 
                 <StackPanel Orientation="Horizontal" Canvas.Top="230" Canvas.Left="50">
-                    <CheckBox Style="{StaticResource cbPropChecker}" x:Name="conline"/>
+                    <CheckBox Style="{StaticResource cbPropChecker}" x:Name="conline" IsThreeState="True"/>
                     <TextBlock Text="Онлайн" Style="{StaticResource tBock}"/>
                 </StackPanel>
 
 
                 <StackPanel Orientation="Horizontal" Canvas.Top="260" Canvas.Left="50">
-                    <CheckBox Style="{StaticResource cbPropChecker}" x:Name="cfoto"/>
+                    <CheckBox Style="{StaticResource cbPropChecker}" x:Name="cfoto" IsThreeState="True"/>
                     <TextBlock Text="С Фото" Style="{StaticResource tBock}"/>
                 </StackPanel>
 
