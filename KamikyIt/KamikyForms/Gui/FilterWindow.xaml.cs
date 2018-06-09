@@ -2,14 +2,18 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using ApiWrapper.Core;
 using MahApps.Metro.Controls;
 
 using KamikyForms.WcfContractManager;
 using ContractInterfaces;
+using KamikyForms.Gui;
 
 
 namespace KamikyForms.Gui
@@ -19,10 +23,47 @@ namespace KamikyForms.Gui
     /// </summary>
     public partial class FilterWindow : MetroWindow
     {
+		public FilterWindow()
+		{
+			InitializeComponent();
 
-        public SearchFilter filter;
-        public List<PersonModel> persons = new List<PersonModel>();
-        public List<PersonModel> choosenpersons = new List<PersonModel>();
+			CustomInitialize();
+		}
+
+		/// <summary>
+		/// Почему-то выдает ошибку, потом как-нибудь.
+		/// </summary>
+		private void SetNumberedTextBoxValidationRules()
+		{
+			foreach (var tb in XamlExtensionHelper.FindLogicalChildren<TextBox>(this))
+			{
+				if (XamlExtensionHelper.CheckStyleName(this.Resources, tb.Style, "ttextboxNumber"))
+				{
+					var bind = new Binding();
+
+					bind.ValidationRules.Add(new TextBoxNumbersValidationRule());
+
+					bind.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+					bind.ValidatesOnDataErrors = true;
+					bind.NotifyOnValidationError = true;
+
+					tb.SetBinding(TextBox.TextProperty, bind);
+				}
+			}
+		}
+
+
+		private void CustomInitialize()
+		{
+			if (StaticVkContractManager.UseServer)
+				AllFilters = StaticVkContractManager.GetVkContractInstance().GetAllSearchFilters();
+
+			CurrentFilter = AllFilters != null && AllFilters.Any() ? AllFilters.First().CopyFilter() : new FilterModel();
+		}
+
+		public SearchFilter filter;
+		public List<PersonModel> persons = new List<PersonModel>();
+		public List<PersonModel> choosenpersons = new List<PersonModel>();
 
 		public List<FilterModel> AllFilters { get; set; }
 
@@ -127,21 +168,6 @@ namespace KamikyForms.Gui
 			offcet.Text = CurrentFilter.Offset.ToString();
 		}
 
-		public FilterWindow()
-        {
-            InitializeComponent();
-
-			CustomInitialize();
-        }
-
-		private void CustomInitialize()
-		{
-			AllFilters = StaticVkContractManager.GetVkContractInstance().GetAllSearchFilters();
-
-			CurrentFilter = AllFilters.Any() ? AllFilters.First().CopyFilter() : new FilterModel();
-		}
-
-
 		private void onTest(object sender, RoutedEventArgs e)
         {
             var peoples = SearchInstrument.getPersons(filter);
@@ -150,7 +176,6 @@ namespace KamikyForms.Gui
             return;
 
         }
-
 
         public void getPostMin()
         {
@@ -192,11 +217,14 @@ namespace KamikyForms.Gui
 
         public void getMinAge()
         {
-            if (cminage.IsChecked == false) return;
-            filter.MinAge = Convert.ToInt32(minage.Text);
+	        filter.MinAge = 0;
 
+			if (cminage.IsChecked == false) return;
+
+			int val;
+			if (int.TryParse(minage.Text, out val))
+				filter.MinAge = Convert.ToInt32(minage.Text);
         }
-
 
         public void getMaxAge()
         {
@@ -258,7 +286,9 @@ namespace KamikyForms.Gui
 
         public void getSex()
         {
-            if (cgender.IsChecked == false) return;
+			filter.Sex = SexEnum.Any;
+
+			if (cgender.IsChecked == false) return;
             if (gender.SelectedIndex == 0)
             {
                 filter.Sex = SexEnum.Woman;
@@ -266,10 +296,6 @@ namespace KamikyForms.Gui
             if (gender.SelectedIndex == 1)
             {
                 filter.Sex = SexEnum.Man;
-            }
-            if (gender.SelectedIndex == 2)
-            {
-                filter.Sex = SexEnum.Any;
             }
         }
 
@@ -376,7 +402,6 @@ namespace KamikyForms.Gui
 
         }
 
-
         public object ConvertBack(object value)
         {
             var str = (value as ComboBox).SelectionBoxItem.ToString();
@@ -449,6 +474,14 @@ namespace KamikyForms.Gui
         {
             DialogResult = true;
         }
+
+
+		private void AllowNumbersTextBox(object sender, TextChangedEventArgs e)
+		{
+			var tb = (sender as TextBox);
+
+			tb.Text = XamlExtensionHelper.NumbersOnlyText(tb.Text);
+		}
 	}
 
 	public class FilterWindowViewModel : ViewModelNotifyPropertyChanged

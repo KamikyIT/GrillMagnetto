@@ -109,6 +109,8 @@
     <Compile Include="Gui\SimpleMessageBox.xaml.cs">
       <DependentUpon>SimpleMessageBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TextBoxNumbersValidationRule.cs" />
+    <Compile Include="XamlExtensionHelper.cs" />
     <Compile Include="IntervalControl.xaml.cs">
       <DependentUpon>IntervalControl.xaml</DependentUpon>
     </Compile>
