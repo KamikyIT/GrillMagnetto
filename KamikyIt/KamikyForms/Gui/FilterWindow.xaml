@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KamikyForms.Gui"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:contractNs="clr-namespace:ContractInterfaces;assembly=ContractInterfaces"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
                  Icon="/Resources/vk_logo.png"
@@ -30,6 +31,7 @@
             </ResourceDictionary.MergedDictionaries>
 
             <BooleanToVisibilityConverter x:Key="BoolToVis" />
+            <local:TextBoxEnableSelectedFilterIndexConverter x:Key="TextBoxEnableSelectedFilterIndexConverter"/>
 
 
             <Style x:Key="DescriptionHeaderStyle" TargetType="Label">
@@ -97,7 +99,9 @@
 
                 <TextBlock Text="Фильтр : " Style="{StaticResource tBock}"/>
 
-                <ComboBox SelectedItem="{Binding Path=CurrentFilter}" ItemsSource="{Binding Path=AllFilters}" Style="{StaticResource tCombo}" />
+                <ComboBox SelectedItem="{Binding Path=CurrentFilter}" ItemsSource="{Binding Path=AllFilters}" Style="{StaticResource tCombo}" x:Name="cbSelectedFilter"/>
+
+                <TextBox IsEnabled="{Binding ElementName=cbSelectedFilter, Path=SelectedIndex, Converter={StaticResource TextBoxEnableSelectedFilterIndexConverter}}" Text="{Binding NewFilterName}" Width="300" Height="25" FontSize="15"/>
             </StackPanel>
 
             <Canvas Canvas.Top ="50">
@@ -116,13 +120,13 @@
                 <StackPanel Orientation="Horizontal" Canvas.Top="40" Canvas.Left="50">
                     <CheckBox Style="{StaticResource cbPropChecker}" x:Name="cminage"/>
                     <TextBlock Text="Мин Возраст" Style="{StaticResource tBock}"/>
-                    <TextBox x:Name="minage" Style="{StaticResource ttextboxNumber}" IsEnabled="{Binding ElementName=cminage, Path=IsChecked}"/>
+                    <TextBox x:Name="minage" Text="{Binding Path=CurrentFilter.Years.Min}" Style="{StaticResource ttextboxNumber}" IsEnabled="{Binding ElementName=cminage, Path=IsChecked}"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Canvas.Top="70" Canvas.Left="50">
                     <CheckBox Style="{StaticResource cbPropChecker}" x:Name="cmaxage"/>
                     <TextBlock Text="Max Возраст" Style="{StaticResource tBock}" />
-                    <TextBox x:Name="maxage" Style="{StaticResource ttextboxNumber}" IsEnabled="{Binding ElementName=cmaxage, Path=IsChecked}"/>
+                    <TextBox x:Name="maxage" Text="{Binding Path=CurrentFilter.Years.Max}" Style="{StaticResource ttextboxNumber}" IsEnabled="{Binding ElementName=cmaxage, Path=IsChecked}"/>
                 </StackPanel>
 
 
@@ -150,31 +154,36 @@
                 <StackPanel Orientation="Horizontal" Canvas.Top="160" Canvas.Left="50">
                     <CheckBox Style="{StaticResource cbPropChecker}" x:Name="cfamily"/>
                     <TextBlock Text="Сем. полож." Style="{StaticResource tBock}"/>
-                    <ComboBox x:Name="family" Style="{StaticResource tCombo}" IsEnabled="{Binding ElementName=cfamily, Path=IsChecked}" Width="232" Height="24">
+                    <ComboBox SelectedItem="{Binding Path=CurrentFilter.FamilyStatus}" x:Name="family" Style="{StaticResource tCombo}" IsEnabled="{Binding ElementName=cfamily, Path=IsChecked}" Width="232" Height="24">
                         <ComboBox.Items>
-                            <ComboBoxItem>не женат (не замужем)</ComboBoxItem>
-                            <ComboBoxItem>встречается</ComboBoxItem>
-                            <ComboBoxItem>помолвлен(-а)</ComboBoxItem>
-                            <ComboBoxItem>женат (замужем)</ComboBoxItem>
-                            <ComboBoxItem>всё сложно</ComboBoxItem>
-                            <ComboBoxItem>в активном поиске</ComboBoxItem>
-                            <ComboBoxItem>влюблен(-а)</ComboBoxItem>
-                            <ComboBoxItem>в гражданском браке</ComboBoxItem>
+                            <!--<ComboBoxItem>не женат (не замужем)</ComboBoxItem>-->
+                            <contractNs:MyFamilyStatus>Single</contractNs:MyFamilyStatus>
+                            <!--<ComboBoxItem>встречается</ComboBoxItem>-->
+                            <contractNs:MyFamilyStatus>Meets</contractNs:MyFamilyStatus>
+                            <!--<ComboBoxItem>помолвлен(-а)</ComboBoxItem>-->
+                            <contractNs:MyFamilyStatus>Engaged</contractNs:MyFamilyStatus>
+                            <!--<ComboBoxItem>женат (замужем)</ComboBoxItem>-->
+                            <contractNs:MyFamilyStatus>Married</contractNs:MyFamilyStatus>
+                            <!--<ComboBoxItem>всё сложно</ComboBoxItem>-->
+                            <contractNs:MyFamilyStatus>ItsComplicated</contractNs:MyFamilyStatus>
+                            <!--<ComboBoxItem>в активном поиске</ComboBoxItem>-->
+                            <contractNs:MyFamilyStatus>TheActiveSearch</contractNs:MyFamilyStatus>
+                            <!--<ComboBoxItem>влюблен(-а)</ComboBoxItem>-->
+                            <contractNs:MyFamilyStatus>InLove</contractNs:MyFamilyStatus>
                         </ComboBox.Items>
-
                     </ComboBox>
                 </StackPanel>
 
 
 
                 <StackPanel Orientation="Horizontal" Canvas.Top="230" Canvas.Left="50">
-                    <CheckBox Style="{StaticResource cbPropChecker}" x:Name="conline" IsThreeState="True"/>
+                    <CheckBox IsChecked="{Binding Path=CurrentFilter.IsOnline}" Style="{StaticResource cbPropChecker}" x:Name="conline" IsThreeState="True"/>
                     <TextBlock Text="Онлайн" Style="{StaticResource tBock}"/>
                 </StackPanel>
 
 
                 <StackPanel Orientation="Horizontal" Canvas.Top="260" Canvas.Left="50">
-                    <CheckBox Style="{StaticResource cbPropChecker}" x:Name="cfoto" IsThreeState="True"/>
+                    <CheckBox IsChecked="{Binding Path=CurrentFilter.HasPhoto}" Style="{StaticResource cbPropChecker}" x:Name="cfoto" IsThreeState="True"/>
                     <TextBlock Text="С Фото" Style="{StaticResource tBock}"/>
                 </StackPanel>
 
@@ -199,46 +208,46 @@
                 <StackPanel Orientation="Horizontal" Canvas.Top="49" Canvas.Left="470">
                     <CheckBox Style="{StaticResource cbPropChecker}" x:Name="cfriendmin"/>
                     <TextBlock Text="Мин друзей" Style="{StaticResource tBock}"/>
-                    <TextBox x:Name="friendmin" Style="{StaticResource ttextboxNumber}" IsEnabled="{Binding ElementName=cfriendmin, Path=IsChecked}"/>
+                    <TextBox Text="{Binding CurrentFilter.FriendsCount.Min}" x:Name="friendmin" Style="{StaticResource ttextboxNumber}" IsEnabled="{Binding ElementName=cfriendmin, Path=IsChecked}"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Canvas.Top="79" Canvas.Left="470">
                     <CheckBox Style="{StaticResource cbPropChecker}" x:Name="cfriendmax"/>
                     <TextBlock Text="Мax друзей" Style="{StaticResource tBock}"/>
-                    <TextBox x:Name="friendmax" Style="{StaticResource ttextboxNumber}" IsEnabled="{Binding ElementName=cfriendmax, Path=IsChecked}"/>
+                    <TextBox Text="{Binding CurrentFilter.FriendsCount.Max}"  x:Name="friendmax" Style="{StaticResource ttextboxNumber}" IsEnabled="{Binding ElementName=cfriendmax, Path=IsChecked}"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Canvas.Top="109" Canvas.Left="470">
                     <CheckBox Style="{StaticResource cbPropChecker}" x:Name="csubsmin"/>
                     <TextBlock Text="Мин подпис" Style="{StaticResource tBock}"/>
-                    <TextBox x:Name="subsmin" Style="{StaticResource ttextboxNumber}" IsEnabled="{Binding ElementName=csubsmin, Path=IsChecked}"/>
+                    <TextBox Text="{Binding CurrentFilter.SubsCount.Min}"  x:Name="subsmin" Style="{StaticResource ttextboxNumber}" IsEnabled="{Binding ElementName=csubsmin, Path=IsChecked}"/>
                 </StackPanel>
 
 
                 <StackPanel Orientation="Horizontal" Canvas.Top="139" Canvas.Left="470">
                     <CheckBox Style="{StaticResource cbPropChecker}" x:Name="csubsmax"/>
                     <TextBlock Text="Маx подпис" Style="{StaticResource tBock}"/>
-                    <TextBox x:Name="subsmax" Style="{StaticResource ttextboxNumber}" IsEnabled="{Binding ElementName=csubsmax, Path=IsChecked}"/>
+                    <TextBox Text="{Binding CurrentFilter.SubsCount.Max}"  x:Name="subsmax" Style="{StaticResource ttextboxNumber}" IsEnabled="{Binding ElementName=csubsmax, Path=IsChecked}"/>
                 </StackPanel>
 
 
                 <StackPanel Orientation="Horizontal" Canvas.Top="169" Canvas.Left="470">
                     <CheckBox Style="{StaticResource cbPropChecker}" x:Name="cpostmin"/>
                     <TextBlock Text="Мин постов" Style="{StaticResource tBock}"/>
-                    <TextBox x:Name="postmin" Style="{StaticResource ttextboxNumber}" IsEnabled="{Binding ElementName=cpostmin, Path=IsChecked}"/>
+                    <TextBox Text="{Binding CurrentFilter.PostCount.Min}"  x:Name="postmin" Style="{StaticResource ttextboxNumber}" IsEnabled="{Binding ElementName=cpostmin, Path=IsChecked}"/>
                 </StackPanel>
 
 
                 <StackPanel Orientation="Horizontal" Canvas.Top="199" Canvas.Left="470">
                     <CheckBox Style="{StaticResource cbPropChecker}" x:Name="cpostmax"/>
                     <TextBlock Text="Маx постов" Style="{StaticResource tBock}"/>
-                    <TextBox x:Name="postmax" Style="{StaticResource ttextboxNumber}" IsEnabled="{Binding ElementName=cpostmax, Path=IsChecked}"/>
+                    <TextBox Text="{Binding CurrentFilter.FriendsCount.Max}"  x:Name="postmax" Style="{StaticResource ttextboxNumber}" IsEnabled="{Binding ElementName=cpostmax, Path=IsChecked}"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Canvas.Top="352" Canvas.Left="50">
                     <CheckBox Style="{StaticResource cbPropChecker}" x:Name="coffcet"/>
                     <TextBlock Text="offcet" Style="{StaticResource tBock}"/>
-                    <TextBox x:Name="offcet" Style="{StaticResource ttextboxNumber}" IsEnabled="{Binding ElementName=coffcet, Path=IsChecked}"/>
+                    <TextBox Text="{Binding CurrentFilter.Offset}"  x:Name="offcet" Style="{StaticResource ttextboxNumber}" IsEnabled="{Binding ElementName=coffcet, Path=IsChecked}"/>
                 </StackPanel>
 
 

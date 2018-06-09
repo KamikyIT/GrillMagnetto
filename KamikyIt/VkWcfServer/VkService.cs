@@ -238,7 +238,7 @@ namespace VkWcfServer
 			}
 		}
 
-		public void AddSearchFilter(FilterModel newFilter)
+		public void AddSearchFilter(FilterModel newFilter, string newName)
 		{
 			StaticLog.LogServiceCall(string.Format("AddSearchFilter({0})", newFilter));
 
@@ -250,8 +250,10 @@ namespace VkWcfServer
 
 					if (exist != null)
 						throw new Exception("Фильтр с заданным именем уже существует : " + newFilter.Name);
-
+					
 					var newVkSearchFilter = new VkSearchFilter(newFilter);
+
+					newVkSearchFilter.Name = newName;
 
 					ctx.VkSearchFilters.Add(newVkSearchFilter);
 

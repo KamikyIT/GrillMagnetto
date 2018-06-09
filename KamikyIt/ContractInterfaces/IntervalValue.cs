@@ -10,5 +10,14 @@ namespace ContractInterfaces
 
 		[DataMember]
 		public T Max { get; set; }
+
+		public IntervalValue<T> CloneInterval()
+		{
+			return new IntervalValue<T>()
+			{
+				Min = this.Min,
+				Max = this.Max,
+			};
+		}
 	}
 }

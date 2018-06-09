@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -425,6 +426,7 @@ namespace KamikyForms.Gui
 	public class FilterWindowViewModel : ViewModelNotifyPropertyChanged
 	{
 		private FilterModel _currentFilter;
+		private string _newFilterName;
 
 		public FilterModel CurrentFilter
 		{
@@ -436,6 +438,19 @@ namespace KamikyForms.Gui
 
 				_currentFilter = value;
 
+				OnPropertyChanged();
+			}
+		}
+
+		public string NewFilterName
+		{
+			get { return _newFilterName; }
+			set
+			{
+				if (_newFilterName == value)
+					return;
+
+				_newFilterName = value;
 				OnPropertyChanged();
 			}
 		}
@@ -458,11 +473,10 @@ namespace KamikyForms.Gui
 
 				AllFilters = new ObservableCollection<FilterModel>(contract.GetAllSearchFilters());
 
-				AllFilters.Add(new FilterModel()
+				AllFilters.Insert(0, new FilterModel()
 				{
-					Name = "Новый фильтр"
+					Name = NewFilterNameConst
 				});
-
 
 				CurrentFilter = AllFilters.First();
 			}
@@ -480,8 +494,31 @@ namespace KamikyForms.Gui
 			{
 				var contract = StaticVkContractManager.GetVkContractInstance();
 
-				contract.AddSearchFilter(CurrentFilter);
+				if (CurrentFilter.Name == NewFilterNameConst)
+					contract.AddSearchFilter(CurrentFilter, NewFilterName);
+				else
+					contract.UpdateSearchFilter(CurrentFilter);
 			}
+		}
+
+		private const string NewFilterNameConst = "Новый фильтр";
+	}
+
+	public class TextBoxEnableSelectedFilterIndexConverter :IValueConverter
+	{
+		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			//targetType - bool
+			// value - int
+
+			var index = (int) value;
+
+			return index == 0;
+		}
+
+		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

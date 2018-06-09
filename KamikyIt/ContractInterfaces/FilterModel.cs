@@ -1,4 +1,6 @@
 using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
 namespace ContractInterfaces
@@ -105,29 +107,13 @@ namespace ContractInterfaces
 		{
 			var newFilter = (FilterModel)this.MemberwiseClone();
 
-			newFilter.Years = new IntervalValue<int>()
-			{
-				Min = this.Years.Min,
-				Max = this.Years.Max,
-			};
+			newFilter.Years = this.Years == null ? null : this.Years.CloneInterval();
 
-			newFilter.FriendsCount = new IntervalValue<int>()
-			{
-				Min = this.FriendsCount.Min,
-				Max = this.FriendsCount.Max,
-			};
+			newFilter.FriendsCount = this.FriendsCount == null ? null : this.FriendsCount.CloneInterval();
 
-			newFilter.SubsCount = new IntervalValue<int>()
-			{
-				Min = this.FriendsCount.Min,
-				Max = this.FriendsCount.Max,
-			};
+			newFilter.SubsCount = this.SubsCount == null ? null : this.SubsCount.CloneInterval();
 
-			newFilter.PostCount = new IntervalValue<int>()
-			{
-				Min = this.FriendsCount.Min,
-				Max = this.FriendsCount.Max,
-			};
+			newFilter.PostCount = this.PostCount == null ? null : this.PostCount.CloneInterval();
 
 			return newFilter;
 		}
@@ -153,30 +139,37 @@ namespace ContractInterfaces
 		//
 		// Сводка:
 		//     Не женат
+		[Display(Name="Не женат")]
 		Single = 1,
 		//
 		// Сводка:
 		//     Встречается
+		[Display(Name = "Встречается")]
 		Meets = 2,
 		//
 		// Сводка:
 		//     Помолвлен
+		[Display(Name = "Помолвлен")]
 		Engaged = 4,
 		//
 		// Сводка:
 		//     Женат
+		[Display(Name = "Женат")]
 		Married = 8,
 		//
 		// Сводка:
 		//     Всё сложно
+		[Display(Name = "Всё сложно")]
 		ItsComplicated = 16,
 		//
 		// Сводка:
 		//     В активном поиске
+		[Display(Name = "В активном поиске")]
 		TheActiveSearch = 32,
 		//
 		// Сводка:
 		//     Влюблён
+		[Display(Name = "Влюблён")]
 		InLove = 64
 	}
 
@@ -188,18 +181,22 @@ namespace ContractInterfaces
 		//
 		// Сводка:
 		//     Пользователь не является другом.
+		[Display(Name = "Пользователь не является другом")]
 		NotFriend = 0,
 		//
 		// Сводка:
 		//     Пользователю отправлена заявка/подписка.
+		[Display(Name = "Пользователю отправлена заявка/подписка")]
 		OutputRequest = 1,
 		//
 		// Сводка:
 		//     Имеется входящая заявка/подписка от пользователя.
+		[Display(Name = "Имеется входящая заявка/подписка от пользователя")]
 		InputRequest = 2,
 		//
 		// Сводка:
 		//     Пользователь является другом.
+		[Display(Name = "Пользователь является другом")]
 		Friend = 3
 	}
 
@@ -209,7 +206,9 @@ namespace ContractInterfaces
 	public enum SearchSortBy
 	{
 		None,
+		[Display(Name = "По дате регистрации")]
 		ByDate,
+		[Display(Name = "По популярности")]
 		ByPopular,
 	}
 }

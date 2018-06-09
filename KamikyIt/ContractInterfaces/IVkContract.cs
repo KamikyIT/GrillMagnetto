@@ -32,6 +32,6 @@ namespace ContractInterfaces
 		void UpdateSearchFilter(FilterModel filter);
 
 		[OperationContract]
-		void AddSearchFilter(FilterModel newFilter);
+		void AddSearchFilter(FilterModel newFilter, string newName);
 	}
 }
