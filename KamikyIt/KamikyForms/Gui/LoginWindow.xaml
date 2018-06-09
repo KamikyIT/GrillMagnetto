@@ -1,0 +1,78 @@
+﻿<mah:MetroWindow x:Class="KamikyForms.Gui.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KamikyForms"
+        xmlns:viewModel="clr-namespace:KamikyForms.Gui"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        mc:Ignorable="d"
+        WindowTitleBrush="Black"
+        Title="" Height="400" Width="640" ResizeMode="NoResize"
+                 x:Name="LoginWindowElement"                 
+                 >
+    <Window.DataContext>
+        <viewModel:LoginWindowViewModel/>
+    </Window.DataContext>
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!--  MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive!  -->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <!--  Accent and AppTheme setting  -->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style x:Key="DescriptionHeaderStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="22" />
+                <Setter Property="HorizontalAlignment" Value="Center" />
+            </Style>
+        </ResourceDictionary>
+
+    </Window.Resources>
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="pack://application:,,,/Images/StormGrill.jpg"/>
+        </Grid.Background>
+        <Canvas>
+            <StackPanel Orientation="Vertical" Margin="40,100,100,20" >
+
+                <TextBlock  Text="Логин" Margin="0, 5" Foreground="White"/>
+                <TextBox x:Name="Login"  Text="{Binding Path=Login, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Text="Пароль" Margin="0, 5" Foreground="White"/>
+                <TextBox x:Name="Pass" Text="{Binding Path=Password, UpdateSourceTrigger=PropertyChanged}" FontFamily="pack://application:,,,/Resources/#password"/>
+                <!--<PasswordBox  x:Name="Pass" Password="{Binding Path=Password, Mode=OneWay}" PasswordChar="*"/>-->
+
+                <Button Name="LoginButton" Margin="0 20" Background="#4c75a3" Foreground="White" Command="{Binding Path=LoginCommand}" CommandParameter="{Binding ElementName=LoginWindowElement}">Логин</Button>
+
+
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal" Margin="5">
+                        <CheckBox Name="CbUseServer" IsChecked="{Binding Path=UseServer, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Text="Адрес сервера : " Foreground="White" VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <TextBox IsEnabled="{Binding ElementName=CbUseServer, Path=IsChecked}" Text="{Binding Path=ServerAddress, UpdateSourceTrigger=LostFocus}" Width="150" FontSize="10" VerticalAlignment="Center"/>
+                </StackPanel>
+
+            </StackPanel>
+
+            <StackPanel Orientation="Vertical" Canvas.Top="330" Canvas.Left="40" Width="500">
+                <TextBlock x:Name="errorText" Foreground="Red" FontStyle="Normal" TextWrapping="Wrap"/>
+            </StackPanel>
+
+            <Label x:Name="verText" Canvas.Top="335" Canvas.Left="40" Foreground="AliceBlue"></Label>
+
+            <StackPanel Canvas.Top ="250" Canvas.Left="480"/>
+
+            
+        </Canvas>
+
+
+
+    </Grid>
+</mah:MetroWindow>
