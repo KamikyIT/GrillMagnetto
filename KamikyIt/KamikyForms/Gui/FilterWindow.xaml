@@ -42,13 +42,12 @@
                 <Setter Property="Foreground" Value="White" />
                 <Setter Property="Background" Value="Black" />
                 <Setter Property="MinWidth" Value="120" />
-
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="Margin" Value="15"/>
             </Style>
 
             <Style x:Key="tCombo" TargetType="ComboBox">
                 <Setter Property="Height" Value="20" />
-
-
                 <Setter Property="Width" Value="150" />
                 <Setter Property="FontSize" Value="15" />
             </Style>
@@ -72,8 +71,14 @@
 
                 <Setter Property="HorizontalAlignment" Value="Left" />
                 <Setter Property="VerticalAlignment" Value="Top" />
-
-
+            </Style>
+            
+            <Style x:Key="btn" TargetType="Button">
+                <Setter Property="MinWidth" Value="150"/>
+                <Setter Property="Background" Value="Black"/>
+                <Setter Property="BorderThickness" Value="2"/>
+                <Setter Property="Width" Value="100"/>
+                <Setter Property="Foreground" Value="White"/>
             </Style>
 
 
@@ -86,7 +91,7 @@
 
             <StackPanel Orientation="Horizontal" Canvas.Top="10" Canvas.Left="70" Canvas.Right="70" Visibility="{Binding Path=UseServer, Converter={StaticResource BoolToVis}}">
 
-                <TextBlock Text="Фильтр : " Style="{StaticResource tBock}"  Background="Black" Foreground="White" FontSize="20" Margin="15"/>
+                <TextBlock Text="Фильтр : " Style="{StaticResource tBock}"/>
 
                 <ComboBox SelectedItem="{Binding Path=CurrentFilter}" ItemsSource="{Binding Path=AllFilters}" Style="{StaticResource tCombo}" />
             </StackPanel>
@@ -94,8 +99,8 @@
             <Canvas Canvas.Top ="50">
                 <StackPanel Orientation="Horizontal" Canvas.Top="10" Canvas.Left="50">
                     <CheckBox Checked="oncheckChanged" Unchecked="oncheckChanged"  Tag="gender" Style="{StaticResource cbPropChecker}" x:Name="cgender"></CheckBox>
-                    <TextBlock  Style="{StaticResource tBock}"  Background="Black" Foreground="White" Text="Пол" FontSize="20" Margin="15"/>
-                    <ComboBox x:Name="gender" Style="{StaticResource tCombo}"  Canvas.Top="35" Canvas.Left="180" FontSize="15" Width="232" Height="24">
+                    <TextBlock Text="Пол" Style="{StaticResource tBock}"/>
+                    <ComboBox x:Name="gender" Style="{StaticResource tCombo}" Width="232" Height="24">
                         <ComboBox.Items>
                             <ComboBoxItem>Woman</ComboBoxItem>
                             <ComboBoxItem>Man</ComboBoxItem>
@@ -107,21 +112,21 @@
 
                 <StackPanel Orientation="Horizontal" Canvas.Top="40" Canvas.Left="50">
                     <CheckBox Checked="oncheckChanged" Unchecked="oncheckChanged"  Tag="minage" Style="{StaticResource cbPropChecker}" x:Name="cminage"></CheckBox>
-                    <TextBlock  Style="{StaticResource tBock}"  Background="Black" Foreground="White" Text="Мин Возраст" FontSize="20" Margin="15"/>
-                    <TextBox x:Name="minage" Style="{StaticResource ttextbox}"></TextBox>
+                    <TextBlock Text="Мин Возраст" Style="{StaticResource tBock}"/>
+                    <TextBox x:Name="minage" Style="{StaticResource ttextbox}"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Canvas.Top="70" Canvas.Left="50">
                     <CheckBox Checked="oncheckChanged" Unchecked="oncheckChanged"  Tag="maxage" Style="{StaticResource cbPropChecker}" x:Name="cmaxage"></CheckBox>
                     <TextBlock  Style="{StaticResource tBock}"  Background="Black" Foreground="White" Text="Max Возраст" FontSize="20" Margin="15"/>
-                    <TextBox x:Name="maxage" Style="{StaticResource ttextbox}"></TextBox>
+                    <TextBox x:Name="maxage" Style="{StaticResource ttextbox}"/>
                 </StackPanel>
 
 
                 <StackPanel Orientation="Horizontal" Canvas.Top="100" Canvas.Left="50">
                     <CheckBox Checked="oncheckChanged" Unchecked="oncheckChanged"  Tag="country" Style="{StaticResource cbPropChecker}" x:Name="ccoountry"></CheckBox>
-                    <TextBlock  Style="{StaticResource tBock}"  Background="Black" Foreground="White" Text="Страна" FontSize="20" Margin="15"/>
-                    <ComboBox x:Name="country" Style="{StaticResource tCombo}"  Canvas.Top="35" Canvas.Left="180" FontSize="15" Width="232" Height="24">
+                    <TextBlock Text="Страна" Style="{StaticResource tBock}"/>
+                    <ComboBox x:Name="country" Style="{StaticResource tCombo}" Width="232" Height="24">
                         <ComboBox.Items>
                             <ComboBoxItem>Россия</ComboBoxItem>
                         </ComboBox.Items>
@@ -131,8 +136,8 @@
 
                 <StackPanel Orientation="Horizontal" Canvas.Top="130" Canvas.Left="50">
                     <CheckBox Checked="oncheckChanged" Unchecked="oncheckChanged"  Tag="city" Style="{StaticResource cbPropChecker}" x:Name="ccity"></CheckBox>
-                    <TextBlock  Style="{StaticResource tBock}"  Background="Black" Foreground="White" Text="Город" FontSize="20" Margin="15"/>
-                    <ComboBox x:Name="city" Style="{StaticResource tCombo}"  Canvas.Top="35" Canvas.Left="180" FontSize="15" Width="232" Height="24">
+                    <TextBlock Text="Город" Style="{StaticResource tBock}"/>
+                    <ComboBox x:Name="city" Style="{StaticResource tCombo}" Width="232" Height="24">
                         <ComboBox.Items>
                             <ComboBoxItem>Чебоксары</ComboBoxItem>
                         </ComboBox.Items>
@@ -142,8 +147,8 @@
 
                 <StackPanel Orientation="Horizontal" Canvas.Top="160" Canvas.Left="50">
                     <CheckBox Checked="oncheckChanged" Unchecked="oncheckChanged"  Tag="family" Style="{StaticResource cbPropChecker}" x:Name="cfamily"></CheckBox>
-                    <TextBlock  Style="{StaticResource tBock}"  Background="Black" Foreground="White" Text="Сем. полож." FontSize="20" Margin="15"/>
-                    <ComboBox x:Name="family" Style="{StaticResource tCombo}"  Canvas.Top="35" Canvas.Left="180" FontSize="15" Width="232" Height="24">
+                    <TextBlock Text="Сем. полож." Style="{StaticResource tBock}"/>
+                    <ComboBox x:Name="family" Style="{StaticResource tCombo}" Width="232" Height="24">
                         <ComboBox.Items>
                             <ComboBoxItem>не женат (не замужем)</ComboBoxItem>
                             <ComboBoxItem>встречается</ComboBoxItem>
@@ -162,12 +167,11 @@
 
                 <StackPanel Orientation="Horizontal" Canvas.Top="230" Canvas.Left="50">
                     <CheckBox Checked="oncheckChanged" Unchecked="oncheckChanged"  Tag="online" Style="{StaticResource cbPropChecker}" x:Name="conline"></CheckBox>
-                    <TextBlock  Style="{StaticResource tBock}"  Background="Black" Foreground="White" Text="Онлайн" FontSize="20" Margin="15"/>
-                    <ComboBox x:Name="online" Style="{StaticResource tCombo}"  Canvas.Top="35" Canvas.Left="180" FontSize="15" Width="232" Height="24">
+                    <TextBlock Text="Онлайн" Style="{StaticResource tBock}"/>
+                    <ComboBox x:Name="online" Style="{StaticResource tCombo}" Width="232" Height="24">
                         <ComboBox.Items>
                             <ComboBoxItem>ДА</ComboBoxItem>
                             <ComboBoxItem>НЕТ</ComboBoxItem>
-
                         </ComboBox.Items>
 
                     </ComboBox>
@@ -176,8 +180,8 @@
 
                 <StackPanel Orientation="Horizontal" Canvas.Top="260" Canvas.Left="50">
                     <CheckBox Checked="oncheckChanged" Unchecked="oncheckChanged"  Tag="foto" Style="{StaticResource cbPropChecker}" x:Name="cfoto"></CheckBox>
-                    <TextBlock  Style="{StaticResource tBock}"  Background="Black" Foreground="White" Text="С Фото" FontSize="20" Margin="15"/>
-                    <ComboBox x:Name="foto" Style="{StaticResource tCombo}"  Canvas.Top="35" Canvas.Left="180" FontSize="15" Width="232" Height="24">
+                    <TextBlock Text="С Фото" Style="{StaticResource tBock}"/>
+                    <ComboBox x:Name="foto" Style="{StaticResource tCombo}" Width="232" Height="24">
                         <ComboBox.Items>
                             <ComboBoxItem>ДА</ComboBoxItem>
                             <ComboBoxItem>НЕТ</ComboBoxItem>
@@ -188,71 +192,71 @@
 
                 <StackPanel Orientation="Horizontal" Canvas.Top="290" Canvas.Left="50">
                     <CheckBox Checked="oncheckChanged" Unchecked="oncheckChanged"  Tag="sort" Style="{StaticResource cbPropChecker}" x:Name="ssort"></CheckBox>
-                    <TextBlock  Style="{StaticResource tBock}"  Background="Black" Foreground="White" Text="Сортировка" FontSize="20" Margin="15"/>
-                    <ComboBox x:Name="sort" Style="{StaticResource tCombo}"  Canvas.Top="35" Canvas.Left="180" FontSize="15" Width="232" Height="24">
+                    <TextBlock Text="Сортировка" Style="{StaticResource tBock}"/>
+                    <ComboBox x:Name="sort" Style="{StaticResource tCombo}" Width="232" Height="24">
                         <ComboBox.Items>
                             <ComboBoxItem>ПО ДАТЕ РЕГИСТРАЦИИ</ComboBoxItem>
                             <ComboBoxItem>ПО ПОПУЛЯРНОСТИ</ComboBoxItem>
-
                         </ComboBox.Items>
-
                     </ComboBox>
                 </StackPanel>
-                <Label  Canvas.Top="19" Canvas.Left="520"     Content="ДОПОЛНИТЕЛЬНЫЕ НАСТРОЙКИ" FontFamily="pack://application:,,,/Resources/#Reforma Grotesk Demi"
+                
+                
+                <Label  Canvas.Top="19" Canvas.Left="520" Content="ДОПОЛНИТЕЛЬНЫЕ НАСТРОЙКИ" FontFamily="pack://application:,,,/Resources/#Reforma Grotesk Demi"
                     FontSize="30" Foreground="White"
-                    FontWeight="Bold"></Label>
+                    FontWeight="Bold"/>
 
 
                 <StackPanel Orientation="Horizontal" Canvas.Top="49" Canvas.Left="470">
                     <CheckBox Checked="oncheckChanged" Unchecked="oncheckChanged"  Tag="friendmin" Style="{StaticResource cbPropChecker}" x:Name="cfriendmin"></CheckBox>
-                    <TextBlock  Style="{StaticResource tBock}"  Background="Black" Foreground="White" Text="Мин друзей" FontSize="20" Margin="15"/>
-                    <TextBox x:Name="friendmin" Style="{StaticResource ttextbox}"></TextBox>
+                    <TextBlock Text="Мин друзей" Style="{StaticResource tBock}"/>
+                    <TextBox x:Name="friendmin" Style="{StaticResource ttextbox}"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Canvas.Top="79" Canvas.Left="470">
                     <CheckBox Checked="oncheckChanged" Unchecked="oncheckChanged"  Tag="friendmax" Style="{StaticResource cbPropChecker}" x:Name="cfriendmax"></CheckBox>
-                    <TextBlock  Style="{StaticResource tBock}"  Background="Black" Foreground="White" Text="Мax друзей" FontSize="20" Margin="15"/>
-                    <TextBox x:Name="friendmax" Style="{StaticResource ttextbox}"></TextBox>
+                    <TextBlock Text="Мax друзей" Style="{StaticResource tBock}"/>
+                    <TextBox x:Name="friendmax" Style="{StaticResource ttextbox}"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Canvas.Top="109" Canvas.Left="470">
                     <CheckBox Checked="oncheckChanged" Unchecked="oncheckChanged"  Tag="subsmin" Style="{StaticResource cbPropChecker}" x:Name="csubsmin"></CheckBox>
-                    <TextBlock  Style="{StaticResource tBock}"  Background="Black" Foreground="White" Text="Мин подпис" FontSize="20" Margin="15"/>
-                    <TextBox x:Name="subsmin" Style="{StaticResource ttextbox}"></TextBox>
+                    <TextBlock Text="Мин подпис" Style="{StaticResource tBock}"/>
+                    <TextBox x:Name="subsmin" Style="{StaticResource ttextbox}"/>
                 </StackPanel>
 
 
                 <StackPanel Orientation="Horizontal" Canvas.Top="139" Canvas.Left="470">
                     <CheckBox Checked="oncheckChanged" Unchecked="oncheckChanged"  Tag="subsmax" Style="{StaticResource cbPropChecker}" x:Name="csubsmax"></CheckBox>
-                    <TextBlock  Style="{StaticResource tBock}"  Background="Black" Foreground="White" Text="Маx подпис" FontSize="20" Margin="15"/>
-                    <TextBox x:Name="subsmax" Style="{StaticResource ttextbox}"></TextBox>
+                    <TextBlock Text="Маx подпис" Style="{StaticResource tBock}"/>
+                    <TextBox x:Name="subsmax" Style="{StaticResource ttextbox}"/>
                 </StackPanel>
 
 
                 <StackPanel Orientation="Horizontal" Canvas.Top="169" Canvas.Left="470">
                     <CheckBox Checked="oncheckChanged" Unchecked="oncheckChanged"  Tag="postmin" Style="{StaticResource cbPropChecker}" x:Name="cpostmin"></CheckBox>
-                    <TextBlock  Style="{StaticResource tBock}"  Background="Black" Foreground="White" Text="Мин постов" FontSize="20" Margin="15"/>
-                    <TextBox x:Name="postmin" Style="{StaticResource ttextbox}"></TextBox>
+                    <TextBlock Text="Мин постов" Style="{StaticResource tBock}"/>
+                    <TextBox x:Name="postmin" Style="{StaticResource ttextbox}"/>
                 </StackPanel>
 
 
                 <StackPanel Orientation="Horizontal" Canvas.Top="199" Canvas.Left="470">
                     <CheckBox Checked="oncheckChanged" Unchecked="oncheckChanged"  Tag="postmax" Style="{StaticResource cbPropChecker}" x:Name="cpostmax"></CheckBox>
-                    <TextBlock  Style="{StaticResource tBock}"  Background="Black" Foreground="White" Text="Маx постов" FontSize="20" Margin="15"/>
-                    <TextBox x:Name="postmax" Style="{StaticResource ttextbox}"></TextBox>
+                    <TextBlock Text="Маx постов" Style="{StaticResource tBock}"/>
+                    <TextBox x:Name="postmax" Style="{StaticResource ttextbox}"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Canvas.Top="352" Canvas.Left="50">
                     <CheckBox Checked="oncheckChanged" Unchecked="oncheckChanged"  Tag="offcet" Style="{StaticResource cbPropChecker}" x:Name="coffcet"></CheckBox>
-                    <TextBlock  Style="{StaticResource tBock}"  Background="Black" Foreground="White" Text="offcet" FontSize="20" Margin="15"/>
-                    <TextBox x:Name="offcet" Style="{StaticResource ttextbox}"></TextBox>
+                    <TextBlock Text="offcet" Style="{StaticResource tBock}"/>
+                    <TextBox x:Name="offcet" Style="{StaticResource ttextbox}"/>
                 </StackPanel>
 
 
-                <Button Canvas.Top ="480" Canvas.Left="72" MinWidth="150" Background="Black" BorderThickness="2" Width="100" Foreground="White" Click="onSearch" >Найти</Button>
-                <Button Canvas.Top ="480" Canvas.Left="356" MinWidth="150" Background="Black" BorderThickness="2" Width="100" Foreground="White" Click="onSelect" >Выбрать</Button>
+                <Button Style="{StaticResource btn}" Canvas.Top ="480" Canvas.Left="72" Click="onSearch" >Найти</Button>
+                <Button Style="{StaticResource btn}" Canvas.Top ="480" Canvas.Left="356" Click="onSelect" >Выбрать</Button>
 
-                <Button Command="{Binding ApplyCommand}" Canvas.Top ="480" Canvas.Left="672" MinWidth="150" Background="Black" BorderThickness="2" Width="100" Foreground="White" Click="onApply" >Применить</Button>
+                <Button Style="{StaticResource btn}" Command="{Binding ApplyCommand}" Canvas.Top ="480" Canvas.Left="672" Click="onApply" >Применить</Button>
                 <Label x:Name="finded" Canvas.Top ="560" Canvas.Left="104" Foreground="AliceBlue">Найдено: 0</Label>
                 <Label x:Name="chosen" Canvas.Top ="560" Canvas.Left="380" Foreground="AliceBlue">Выбрано: 0</Label>
             </Canvas>
