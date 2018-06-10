@@ -235,18 +235,10 @@
                     <TextBox Text="{Binding Path=SubsCountMax, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  x:Name="subsmax" Style="{StaticResource ttextboxNumber}" IsEnabled="{Binding ElementName=csubs, Path=IsChecked}"/>
                 </StackPanel>
 
-
-                <StackPanel Orientation="Horizontal" Canvas.Top="169" Canvas.Left="470">
-                    <CheckBox IsChecked="{Binding Path=HasPostsCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource cbPropChecker}" x:Name="cpost"/>
-                    <TextBlock Text="Мин постов" Style="{StaticResource tBock}"/>
-                    <TextBox Text="{Binding Path=PostsCountMin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  x:Name="postmin" Style="{StaticResource ttextboxNumber}" IsEnabled="{Binding ElementName=cpost, Path=IsChecked}"/>
-                </StackPanel>
-
-
-                <StackPanel Orientation="Horizontal" Canvas.Top="199" Canvas.Left="470">
+                <StackPanel Orientation="Horizontal" Canvas.Top="179" Canvas.Left="470">
                     <CheckBox Style="{StaticResource cbPropChecker}" Visibility="Hidden"/>
-                    <TextBlock Text="Маx постов" Style="{StaticResource tBock}"/>
-                    <TextBox Text="{Binding Path=PostsCountMax, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  x:Name="postmax" Style="{StaticResource ttextboxNumber}" IsEnabled="{Binding ElementName=cpost, Path=IsChecked}"/>
+                    <TextBlock Text="Общих друзей" Style="{StaticResource tBock}"/>
+                    <TextBox Text="{Binding Path=CommonFriendsCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ttextboxNumber}"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Canvas.Top="352" Canvas.Left="50">

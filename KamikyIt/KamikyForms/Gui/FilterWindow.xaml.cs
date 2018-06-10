@@ -145,6 +145,8 @@ namespace KamikyForms.Gui
 				OnPropertyChanged("FriendsCountMin");
 				OnPropertyChanged("FriendsCountMax");
 
+				OnPropertyChanged("CommonFriendsCount");
+
 				HasSubsCount = _currentFilter.SubsCount != null;
 				OnPropertyChanged("SubsCountMin");
 				OnPropertyChanged("SubsCountMax");
@@ -390,6 +392,19 @@ namespace KamikyForms.Gui
 			}
 		}
 
+		public int CommonFriendsCount
+		{
+			get { return CurrentFilter.CommonFriends; }
+			set
+			{
+				if (CurrentFilter.CommonFriends == value)
+					return;
+
+				CurrentFilter.CommonFriends = value;
+
+				OnPropertyChanged();
+			}
+		}
 		
 		public bool HasSubsCount
 		{

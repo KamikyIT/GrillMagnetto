@@ -65,6 +65,11 @@ namespace VkWcfServer
 		public int? MaxFriendsCount { get; set; }
 
 		/// <summary>
+		/// Количество общих друзей.
+		/// </summary>
+		public int CommonFriendsCount { get; set; }
+
+		/// <summary>
 		/// Количество подписчиков.
 		/// </summary>
 		public int? MinSubsCount { get; set; }
@@ -73,16 +78,6 @@ namespace VkWcfServer
 		/// Количество подписчиков.
 		/// </summary>
 		public int? MaxSubsCount { get; set; }
-
-		/// <summary>
-		/// Количество постов на стене.
-		/// </summary>
-		public int? MinPostsCount { get; set; }
-
-		/// <summary>
-		/// Количество постов на стене.
-		/// </summary>
-		public int? MaxPostsCount { get; set; }
 
 		/// <summary>
 		/// Оффсет в поиске.
@@ -123,13 +118,12 @@ namespace VkWcfServer
 			MaxFriendsCount = copy.FriendsCount == null ? default(int?) : copy.FriendsCount.Max;
 			MinSubsCount = copy.SubsCount == null ? default(int?) : copy.SubsCount.Min;
 			MaxSubsCount = copy.SubsCount == null ? default(int?) : copy.SubsCount.Max;
-			MinPostsCount = copy.PostCount == null ? default(int?) : copy.PostCount.Min;
-			MaxPostsCount = copy.PostCount == null ? default(int?) : copy.PostCount.Max;
 			MinYear = copy.Years == null ? default(int?) : copy.Years.Min;
 			MaxYear = copy.Years == null ? default(int?) : copy.Years.Max;
 			Offset = copy.Offset;
 			Sex = copy.Sex;
 			SortBy = copy.SortBy;
+			CommonFriendsCount = copy.CommonFriends;
 		}
 
 		public static void CopyToFilterModel(VkSearchFilter copy, FilterModel filter)
@@ -147,12 +141,10 @@ namespace VkWcfServer
 				: null;
 			filter.SubsCount = copy.MinSubsCount.HasValue && copy.MaxSubsCount.HasValue ?  new IntervalValue<int>(copy.MinSubsCount.Value, copy.MaxSubsCount.Value) : null;
 			filter.Years = copy.MinYear.HasValue && copy.MaxYear.HasValue ? new IntervalValue<int>(copy.MinYear.Value, copy.MaxYear.Value) : null;
-			filter.PostCount = copy.MinPostsCount.HasValue && copy.MaxPostsCount.HasValue
-				? new IntervalValue<int>(copy.MinPostsCount.Value, copy.MaxPostsCount.Value)
-				: null;
 			filter.Offset = copy.Offset;
 			filter.Sex = copy.Sex;
 			filter.SortBy = copy.SortBy;
+			filter.CommonFriends = copy.CommonFriendsCount;
 		}
 	}
 }
