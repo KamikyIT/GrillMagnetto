@@ -112,6 +112,12 @@
       <DependentUpon>201803051744070_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ContractInterfaces\ContractInterfaces.csproj">
+      <Project>{F786D996-5C10-4DFD-B50B-385D4973DB82}</Project>
+      <Name>ContractInterfaces</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

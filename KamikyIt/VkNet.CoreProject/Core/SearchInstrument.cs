@@ -6,13 +6,16 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using ContractInterfaces;
 using VkNet;
+using VkNet.Enums;
 using VkNet.Enums.Filters;
 using VkNet.Examples.DataBaseBehaviour;
 using VkNet.Examples.ForChat;
 using VkNet.Model;
 using VkNet.Model.RequestParams;
 using VkNet.Utils;
+using Sex = VkNet.Enums.Sex;
 
 namespace ApiWrapper.Core
 {
@@ -29,40 +32,81 @@ namespace ApiWrapper.Core
         public static string ApiVersion;
         private static VkApi api;
 
-        public static List<PersonModel> getPersons(SearchFilter filter)
-        {
-            var peoples = api.Users.Search(new UserSearchParams()
-            {
-                AgeFrom = (ushort)filter.MinAge,
-                AgeTo = (ushort)filter.MaxAge,
-                City = filter.CityId,
-                Country = filter.CountryId,
-                HasPhoto = filter.HasPhoto,
-                Online = filter.IsOnline,
-                Sort = (VkNet.Enums.UserSort)filter.profileSort,
-                Sex = (VkNet.Enums.Sex)filter.Sex,
-                
-                Offset = (uint?)filter.Offcet,
-                Status = (VkNet.Enums.MaritalStatus)filter.FamilyState,
-                // GroupId = 22751485,
-                Count = 1000,
-                Fields = ProfileFields.All,
-            });
+	    public static List<PersonModel> GetPersons(FilterModel filter)
+	    {
+		    UserSearchParams userSearchParams = ConverToVkUserSearchParams(filter);
 
-            //bans
-            List<User> bans_users = peoples.Where(o => !Bans.Contains(o.Domain)).ToList();
+		    var peoples = api.Users.Search(userSearchParams);
 
-            //онлайна
-            List<User> onlines = bans_users.Where(o => o.Online == true && o.IsFriend == false && o.Photo200 != null).ToList();
-            //можем писать
-            List<User> canWrites = onlines.Where(o => o.CanWritePrivateMessage && !o.Blacklisted).ToList();
-            //доп опции
-            List<User> normGirls = canWrites.Where(o => isNormalGirl(o, filter)).ToList();
-            return normGirls.Select(x => new PersonModel(x)).ToList();
-        }
+		    var unbannedUsers = peoples.Where(x => !Bans.Contains(x.Domain));
+
+		    var canWrite = unbannedUsers.Where(x => x.CanWritePrivateMessage && !x.Blacklisted);
+
+		    var niceGrills = canWrite.Where(x => IsNormalGrill(x));
+
+		    var myFilteredPeople = niceGrills;
 
 
-        public static bool isNormalGirl(User user, SearchFilter filter)
+			if (filter.FriendsCount != null)
+		    {
+			    myFilteredPeople = myFilteredPeople.Where(x => 
+					x.Counters.Friends.HasValue
+						? x.Counters.Friends.Value >= filter.FriendsCount.Min 
+						: true);
+
+				myFilteredPeople = myFilteredPeople.Where(x => 
+					x.Counters.Friends.HasValue
+						? x.Counters.Friends.Value <= filter.FriendsCount.Max
+						: true);
+			}
+
+		    if (filter.SubsCount != null)
+		    {
+			    myFilteredPeople = myFilteredPeople.Where(x =>
+				    x.Counters.Followers.HasValue
+					    ? x.Counters.Followers.Value >= filter.SubsCount.Min
+					    : true);
+
+			    myFilteredPeople = myFilteredPeople.Where(x =>
+				    x.Counters.Followers.HasValue
+					    ? x.Counters.Followers.Value <= filter.SubsCount.Max
+					    : true);
+			}
+
+		    myFilteredPeople = myFilteredPeople.Where(x => x.Counters.MutualFriends <= filter.CommonFriends);
+
+			return myFilteredPeople.Select(x => new PersonModel(x)).ToList();
+	    }
+
+	    private static UserSearchParams ConverToVkUserSearchParams(FilterModel filter)
+	    {
+		    var userSearchParams = new UserSearchParams()
+		    {
+			    AgeFrom = filter.Years != null ? (ushort) filter.Years.Min : default(ushort?),
+			    AgeTo = filter.Years != null ? (ushort) filter.Years.Max : default(ushort?),
+			    City = !string.IsNullOrEmpty(filter.City) ? GetCityId(filter.City) : default(int?),
+			    Sex = filter.Sex.HasValue ? (VkNet.Enums.Sex) filter.Sex : Sex.Unknown,
+			    HasPhoto = filter.HasPhoto,
+			    Online = filter.IsOnline,
+			    Offset = (uint) filter.Offset,
+			    Country = !string.IsNullOrEmpty(filter.Coutry) ? GetCountryId(filter.Coutry) : default(int?),
+			    Status = filter.FamilyStatus.HasValue
+				    ? (MaritalStatus) ((int) filter.FamilyStatus.Value)
+				    : default(MaritalStatus?),
+		    };
+
+			if (filter.SortBy != SearchSortBy.None)
+				userSearchParams.Sort = filter.SortBy == SearchSortBy.ByDate? UserSort.ByRegDate : UserSort.ByPopularity;
+
+		    return userSearchParams;
+	    }
+
+	    private static bool IsNormalGrill(User user)
+	    {
+		    return true;
+	    }
+
+		public static bool isNormalGirl(User user, SearchFilter filter)
         {
 
             if (user.FollowersCount > filter.SubsMax) return false;

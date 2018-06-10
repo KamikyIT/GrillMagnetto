@@ -52,19 +52,17 @@ namespace KamikyForms.Gui
 		}
 
 
-
 		public List<PersonModel> persons = new List<PersonModel>();
 		public List<PersonModel> choosenpersons = new List<PersonModel>();
 
-
-
 		private void onSearch(object sender, RoutedEventArgs e)
 		{
-			var filter = new SearchFilter();
-			List<PersonModel> peoples = SearchInstrument.getPersons(filter);
-			persons = peoples;
-			UpdateUi();
+			return;
 
+			//var filter = new SearchFilter();
+			//List<PersonModel> peoples = SearchInstrument.getPersons(filter);
+			//persons = peoples;
+			//UpdateUi();
 		}
 
 		private void onSelect(object sender, RoutedEventArgs e)
@@ -111,7 +109,6 @@ namespace KamikyForms.Gui
 		private bool _hasSort;
 		private bool _hasFriendsCount;
 		private bool _hasSubsCount;
-		private bool _hasPostsCount;
 		private bool _hasOffset;
 
 		public FilterModel CurrentFilter
@@ -151,10 +148,6 @@ namespace KamikyForms.Gui
 				HasSubsCount = _currentFilter.SubsCount != null;
 				OnPropertyChanged("SubsCountMin");
 				OnPropertyChanged("SubsCountMax");
-
-				HasPostsCount = _currentFilter.PostCount != null;
-				OnPropertyChanged("PostsCountMin");
-				OnPropertyChanged("PostsCountMax");
 
 				HasOffset = _currentFilter.Offset == 0;
 				OnPropertyChanged("Offset");
@@ -439,50 +432,7 @@ namespace KamikyForms.Gui
 				OnPropertyChanged();
 			}
 		}
-
-
-		public bool HasPostsCount
-		{
-			get { return _hasPostsCount; }
-			set
-			{
-				if (_hasPostsCount == value)
-					return;
-
-				_hasPostsCount = value;
-
-				OnPropertyChanged();
-			}
-		}
-
-		public int PostsCountMin
-		{
-			get { return CurrentFilter.PostCount.Min; }
-			set
-			{
-				if (CurrentFilter.PostCount.Min == value)
-					return;
-
-				CurrentFilter.PostCount.Min = value;
-
-				OnPropertyChanged();
-			}
-		}
-
-		public int PostsCountMax
-		{
-			get { return CurrentFilter.PostCount.Max; }
-			set
-			{
-				if (CurrentFilter.PostCount.Max == value)
-					return;
-
-				CurrentFilter.PostCount.Max = value;
-
-				OnPropertyChanged();
-			}
-		}
-
+		
 
 		public bool HasOffset
 		{
@@ -563,8 +513,6 @@ namespace KamikyForms.Gui
 				filter.FriendStatus = filter.FriendStatus.HasValue ? filter.FriendStatus.Value : FriendStatus.NotFriend;
 
 				filter.FriendsCount = filter.FriendsCount != null ? filter.FriendsCount : new IntervalValue<int>();
-
-				filter.PostCount = filter.PostCount != null ? filter.PostCount : new IntervalValue<int>();
 
 				filter.SubsCount = filter.SubsCount != null ? filter.SubsCount : new IntervalValue<int>();
 			}

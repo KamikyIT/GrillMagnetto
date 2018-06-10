@@ -16,7 +16,6 @@ namespace ContractInterfaces
 				Years = new IntervalValue<int>();
 				FriendsCount = new IntervalValue<int>();
 				SubsCount = new IntervalValue<int>();
-				PostCount = new IntervalValue<int>();
 				HasPhoto = false;
 				IsOnline = false;
 				Sex = ContractInterfaces.Sex.Unknown;
@@ -61,11 +60,6 @@ namespace ContractInterfaces
 		[DataMember]
 		public IntervalValue<int> SubsCount { get; set; }
 
-		/// <summary>
-		/// Количество постов.
-		/// </summary>
-		[DataMember]
-		public IntervalValue<int> PostCount { get; set; }
 
 		[DataMember]
 		/// <summary>
@@ -115,6 +109,9 @@ namespace ContractInterfaces
 		[DataMember]
 		public SearchSortBy SortBy { get; set; }
 
+		[DataMember]
+		public int CommonFriends { get; set; }
+
 		public override string ToString()
 		{
 			return Name;
@@ -129,8 +126,6 @@ namespace ContractInterfaces
 			newFilter.FriendsCount = this.FriendsCount == null ? null : this.FriendsCount.CloneInterval();
 
 			newFilter.SubsCount = this.SubsCount == null ? null : this.SubsCount.CloneInterval();
-
-			newFilter.PostCount = this.PostCount == null ? null : this.PostCount.CloneInterval();
 
 			return newFilter;
 		}
