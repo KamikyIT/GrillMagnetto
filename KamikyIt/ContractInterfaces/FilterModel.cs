@@ -8,6 +8,23 @@ namespace ContractInterfaces
 	[DataContract]
 	public class FilterModel
 	{
+
+		public FilterModel(bool initIntervals = true)
+		{
+			if (initIntervals)
+			{
+				Years = new IntervalValue<int>();
+				FriendsCount = new IntervalValue<int>();
+				SubsCount = new IntervalValue<int>();
+				PostCount = new IntervalValue<int>();
+				HasPhoto = false;
+				IsOnline = false;
+				Sex = ContractInterfaces.Sex.Unknown;
+				FamilyStatus = MyFamilyStatus.Single;
+				FriendStatus = ContractInterfaces.FriendStatus.NotFriend;
+			}
+		}
+
 		[DataMember]
 		/// <summary>
 		/// Наименование фильтра.

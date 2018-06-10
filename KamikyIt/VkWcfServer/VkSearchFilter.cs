@@ -97,44 +97,63 @@ namespace VkWcfServer
 		public VkSearchFilter(FilterModel copy)
 		{
 			Name = copy.Name;
-			Coutry = copy.Coutry;
 			City = copy.City;
-
-			MinYear = copy.Years != null? copy.Years.Min : 0;
-			MaxYear = copy.Years != null? copy.Years.Max : 0;
-
-			HasPhoto = copy.HasPhoto;
-
-			IsOnline = copy.IsOnline;
-
-			Sex = copy.Sex;
-
+			Coutry = copy.Coutry;
 			FamilyStatus = copy.FamilyStatus;
-
-			FriendStatus = copy.FriendStatus;
-
 			FirstContact = copy.FirstContact;
+			FriendStatus = copy.FriendStatus;
+			HasPhoto = copy.HasPhoto;
+			IsOnline = copy.IsOnline;
+			MinFriendsCount = copy.FriendsCount == null ? 0 : copy.FriendsCount.Min;
+			MaxFriendsCount = copy.FriendsCount == null ? 0 : copy.FriendsCount.Max;
+			MinSubsCount = copy.SubsCount == null ? 0 : copy.SubsCount.Min;
+			MaxSubsCount = copy.SubsCount == null ? 0 : copy.SubsCount.Max;
+			MinYear = copy.Years == null ? 0 : copy.Years.Min;
+			MaxYear = copy.Years == null ? 0 : copy.Years.Max;
+			Offset = copy.Offset;
+			Sex = copy.Sex;
+			SortBy = copy.SortBy;
 		}
 
 		public void CopyProps(FilterModel copy)
 		{
-			Coutry = copy.Coutry;
+			Name = copy.Name;
 			City = copy.City;
-
-			MinYear = copy.Years != null ? copy.Years.Min : 0;
-			MaxYear = copy.Years != null ? copy.Years.Max : 0;
-
-			HasPhoto = copy.HasPhoto;
-
-			IsOnline = copy.IsOnline;
-
-			Sex = copy.Sex;
-
+			Coutry = copy.Coutry;
 			FamilyStatus = copy.FamilyStatus;
-
-			FriendStatus = copy.FriendStatus;
-
 			FirstContact = copy.FirstContact;
+			FriendStatus = copy.FriendStatus;
+			HasPhoto = copy.HasPhoto;
+			IsOnline = copy.IsOnline;
+			MinFriendsCount = copy.FriendsCount == null ? 0 : copy.FriendsCount.Min;
+			MaxFriendsCount = copy.FriendsCount == null ? 0 : copy.FriendsCount.Max;
+			MinSubsCount = copy.SubsCount == null ? 0 : copy.SubsCount.Min;
+			MaxSubsCount = copy.SubsCount == null ? 0 : copy.SubsCount.Max;
+			MinYear = copy.Years == null ? 0 : copy.Years.Min;
+			MaxYear = copy.Years == null ? 0 : copy.Years.Max;
+			Offset = copy.Offset;
+			Sex = copy.Sex;
+			SortBy = copy.SortBy;
+		}
+
+		public static void CopyToFilterModel(VkSearchFilter copy, FilterModel filter)
+		{
+			filter.Name = copy.Name;
+			filter.City = copy.City;
+			filter.Coutry = copy.Coutry;
+			filter.FamilyStatus = copy.FamilyStatus;
+			filter.FirstContact = false;
+			filter.FriendStatus = copy.FriendStatus;
+			filter.HasPhoto = copy.HasPhoto;
+			filter.IsOnline = copy.IsOnline;
+			filter.FriendsCount = copy.MinFriendsCount.HasValue && copy.MaxFriendsCount.HasValue
+				? new IntervalValue<int>(copy.MinFriendsCount.Value, copy.MaxFriendsCount.Value)
+				: null;
+			filter.SubsCount = copy.MinSubsCount.HasValue && copy.MaxSubsCount.HasValue ?  new IntervalValue<int>(copy.MinSubsCount.Value, copy.MaxSubsCount.Value) : null;
+			filter.Years = copy.MinYear.HasValue && copy.MaxYear.HasValue ? new IntervalValue<int>(copy.MinYear.Value, copy.MaxYear.Value) : null;
+			filter.Offset = copy.Offset;
+			filter.Sex = copy.Sex;
+			filter.SortBy = copy.SortBy;
 		}
 	}
 }

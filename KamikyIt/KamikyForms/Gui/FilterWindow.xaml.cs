@@ -27,8 +27,6 @@ namespace KamikyForms.Gui
 		public FilterWindow()
 		{
 			InitializeComponent();
-
-			CustomInitialize();
 		}
 
 		/// <summary>
@@ -54,338 +52,15 @@ namespace KamikyForms.Gui
 		}
 
 
-		private void CustomInitialize()
-		{
-			if (StaticVkContractManager.UseServer)
-				AllFilters = StaticVkContractManager.GetVkContractInstance().GetAllSearchFilters();
 
-			CurrentFilter = AllFilters != null && AllFilters.Any() ? AllFilters.First().CopyFilter() : new FilterModel();
-		}
-
-		public SearchFilter filter;
 		public List<PersonModel> persons = new List<PersonModel>();
 		public List<PersonModel> choosenpersons = new List<PersonModel>();
 
-		public List<FilterModel> AllFilters { get; set; }
 
-		public FilterModel _currentFilter;
-
-		public FilterModel CurrentFilter
-		{
-			get { return _currentFilter; }
-			set
-			{
-				if (_currentFilter == value)
-					return;
-
-				_currentFilter = value;
-
-				DisplayCurrentFilter();
-			}
-		}
-
-		private void DisplayCurrentFilter()
-		{
-			cgender.IsChecked = CurrentFilter.Sex.HasValue;
-			cminage.IsChecked = CurrentFilter.Years != null;
-			cmaxage.IsChecked = CurrentFilter.Years != null;
-			ccoountry.IsChecked = !string.IsNullOrEmpty(CurrentFilter.Coutry);
-			ccity.IsChecked = !string.IsNullOrEmpty(CurrentFilter.City);
-			cfamily.IsChecked = CurrentFilter.FamilyStatus.HasValue;
-			conline.IsChecked = CurrentFilter.IsOnline.HasValue;
-			cfoto.IsChecked = CurrentFilter.HasPhoto.HasValue;
-			cfriendmin.IsChecked = CurrentFilter.FriendsCount != null;
-			cfriendmax.IsChecked = CurrentFilter.FriendsCount != null;
-			csubsmin.IsChecked = CurrentFilter.SubsCount != null;
-			csubsmax.IsChecked = CurrentFilter.SubsCount != null;
-			cpostmin.IsChecked = CurrentFilter.PostCount != null;
-			cpostmax.IsChecked = CurrentFilter.PostCount != null;
-			ssort.IsChecked = CurrentFilter.SortBy != SearchSortBy.None;
-			coffcet.IsChecked = CurrentFilter.Offset == 0;
-
-			if (CurrentFilter.Sex.HasValue)
-				switch (CurrentFilter.Sex.Value)
-				{
-					case Sex.Unknown:
-						gender.SelectedIndex = 2;
-						break;
-					case Sex.Female:
-						gender.SelectedIndex = 0;
-						break;
-					case Sex.Male:
-						gender.SelectedIndex = 1;
-						break;
-					default:
-						break;
-				}
-
-			country.SelectedIndex = 0;
-			city.SelectedIndex = 0;
-
-			family.SelectedIndex = 0;
-
-			if (CurrentFilter.FamilyStatus.HasValue)
-			{
-				switch (CurrentFilter.FamilyStatus.Value)
-				{
-					case MyFamilyStatus.Single:
-						family.SelectedIndex = 0;
-						break;
-					case MyFamilyStatus.Meets:
-						family.SelectedIndex = 1;
-						break;
-					case MyFamilyStatus.Engaged:
-						family.SelectedIndex = 2;
-						break;
-					case MyFamilyStatus.Married:
-						family.SelectedIndex = 3;
-						break;
-					case MyFamilyStatus.ItsComplicated:
-						family.SelectedIndex = 4;
-						break;
-					case MyFamilyStatus.TheActiveSearch:
-						family.SelectedIndex = 5;
-						break;
-					case MyFamilyStatus.InLove:
-						family.SelectedIndex = 6;
-						break;
-					default:
-						break;
-				}
-			}
-
-			conline.IsChecked = CurrentFilter.IsOnline;
-			cfoto.IsChecked = CurrentFilter.HasPhoto;
-
-			sort.SelectedIndex = (int)CurrentFilter.SortBy - 1;
-			minage.Text = CurrentFilter.Years != null ? CurrentFilter.Years.Min.ToString() : "0";
-			maxage.Text = CurrentFilter.Years != null ? CurrentFilter.Years.Max.ToString() : "0";
-			friendmin.Text = CurrentFilter.FriendsCount != null ? CurrentFilter.FriendsCount.Min.ToString() : "0";
-			friendmax.Text = CurrentFilter.FriendsCount != null ? CurrentFilter.FriendsCount.Max.ToString() : "0";
-			subsmin.Text = CurrentFilter.SubsCount != null ? CurrentFilter.SubsCount.Min.ToString() : "0";
-			subsmax.Text = CurrentFilter.SubsCount != null ? CurrentFilter.SubsCount.Max.ToString() : "0";
-			postmin.Text = CurrentFilter.PostCount != null ? CurrentFilter.PostCount.Min.ToString() : "0";
-			postmax.Text = CurrentFilter.PostCount != null ? CurrentFilter.PostCount.Max.ToString() : "0";
-			offcet.Text = CurrentFilter.Offset.ToString();
-		}
-
-		#region Set SearchFilter values
-
-		public void getPostMin()
-		{
-			filter.PostMin = 0;
-
-			if (cpostmin.IsChecked == false) return;
-
-			var val = 0;
-
-			if (int.TryParse(postmin.Text, out val))
-				filter.PostMin = Convert.ToInt32(postmin.Text);
-		}
-
-		public void getPostMax()
-		{
-			filter.PostMax = 0;
-
-			if (cpostmax.IsChecked == false) return;
-
-			var val = 0;
-
-			if (int.TryParse(postmax.Text, out val))
-				filter.PostMax = Convert.ToInt32(postmax.Text);
-		}
-
-		public void getSubsMin()
-		{
-			filter.SubsMin = 0;
-
-			if (csubsmin.IsChecked == false) return;
-
-			var val = 0;
-
-			if (int.TryParse(subsmin.Text, out val))
-				filter.SubsMin = Convert.ToInt32(subsmin.Text);
-		}
-
-		public void getSubsMax()
-		{
-			filter.SubsMax = 0;
-
-			if (csubsmax.IsChecked == false) return;
-
-			var val = 0;
-
-			if (int.TryParse(subsmax.Text, out val))
-				filter.SubsMax = Convert.ToInt32(subsmax.Text);
-		}
-
-		public void getFriendMin()
-		{
-			filter.FriendMin = 0;
-
-			if (cfriendmin.IsChecked == false) return;
-
-			var val = 0;
-
-			if (int.TryParse(friendmin.Text, out val))
-				filter.FriendMin = Convert.ToInt32(friendmin.Text);
-		}
-
-		public void getFriendMax()
-		{
-			filter.FriendMax = 0;
-
-			if (cfriendmax.IsChecked == false) return;
-
-			var val = 0;
-
-			if (int.TryParse(friendmax.Text, out val))
-				filter.FriendMax = Convert.ToInt32(friendmax.Text);
-		}
-
-		public void getMinAge()
-		{
-			filter.MinAge = 0;
-
-			if (cminage.IsChecked == false) return;
-
-			var val = 0;
-
-			if (int.TryParse(minage.Text, out val))
-				filter.MinAge = Convert.ToInt32(minage.Text);
-		}
-
-		public void getMaxAge()
-		{
-			filter.MaxAge = 0;
-
-			if (cmaxage.IsChecked == false) return;
-
-			var val = 0;
-
-			if (int.TryParse(maxage.Text, out val))
-				filter.MaxAge = Convert.ToInt32(maxage.Text);
-
-		}
-
-		public void getCountry()
-		{
-			if (ccoountry.IsChecked == false) return;
-			if (country.SelectedIndex == 0)
-			{
-				filter.CountryId = 1;
-			}
-		}
-
-		public void getCity()
-		{
-			if (ccity.IsChecked == false) return;
-			if (city.SelectedIndex == 0)
-			{
-				filter.CityId = 157;
-			}
-		}
-
-		public void getPhoto()
-		{
-			filter.HasPhoto = cfoto.IsChecked;
-		}
-
-		public void getOnline()
-		{
-			filter.IsOnline = conline.IsChecked;
-		}
-
-		public void getFamily()
-		{
-			if (cfamily.IsChecked == false) return;
-			filter.FamilyState = (FamilyState)ConvertBack(family);
-		}
-
-		public void getSex()
-		{
-			filter.Sex = SexEnum.Any;
-
-			if (cgender.IsChecked == false) return;
-			if (gender.SelectedIndex == 0)
-			{
-				filter.Sex = SexEnum.Woman;
-			}
-			if (gender.SelectedIndex == 1)
-			{
-				filter.Sex = SexEnum.Man;
-			}
-		}
-
-		public void getSort()
-		{
-			if (ssort.IsChecked == false) return;
-			if (sort.SelectedIndex == 0)
-			{
-				filter.profileSort = ProfileSort.date;
-			}
-			if (gender.SelectedIndex == 1)
-			{
-				filter.profileSort = ProfileSort.popular;
-
-			}
-
-		}
-
-		public void getOffcet()
-		{
-			if (coffcet.IsChecked == false) return;
-			filter.Offcet = Convert.ToInt32(offcet.Text);
-
-		}
-
-		#endregion
-
-		public object ConvertBack(object value)
-		{
-			var str = (value as ComboBox).SelectionBoxItem.ToString();
-
-			switch (str)
-			{
-				case "не женат (не замужем)":
-					return FamilyState.NotMarry;
-				case "встречается":
-					return FamilyState.Dating;
-				case "помолвлен(-а)":
-					return FamilyState.Betrothed;
-				case "женат (замужем)":
-					return FamilyState.Marry;
-				case "всё сложно<":
-					return FamilyState.AllHardShit;
-				case "в активном поиске":
-					return FamilyState.ActiveSearch;
-				case "влюблен(-а)":
-					return FamilyState.Loved;
-				case "в гражданском браке":
-					return FamilyState.CivilMarry;
-				default:
-					throw new Exception("Невозможно распарсить");
-			}
-		}
 
 		private void onSearch(object sender, RoutedEventArgs e)
 		{
-			filter = new SearchFilter();
-			getSex();
-			getMinAge();
-			getMaxAge();
-			getCountry();
-			getCity();
-			getFamily();
-			getOnline();
-			getFriendMin();
-			getFriendMax();
-			getSubsMin();
-			getSubsMax();
-			getPostMin();
-			getPostMax();
-			getOffcet();
-			getSort();
+			var filter = new SearchFilter();
 			List<PersonModel> peoples = SearchInstrument.getPersons(filter);
 			persons = peoples;
 			UpdateUi();
@@ -428,6 +103,17 @@ namespace KamikyForms.Gui
 		private FilterModel _currentFilter;
 		private string _newFilterName;
 
+		private bool _hasSex;
+		private bool _hasYears;
+		private bool _hasCountry;
+		private bool _hasCity;
+		private bool _hasFamilyStatus;
+		private bool _hasSort;
+		private bool _hasFriendsCount;
+		private bool _hasSubsCount;
+		private bool _hasPostsCount;
+		private bool _hasOffset;
+
 		public FilterModel CurrentFilter
 		{
 			get { return _currentFilter; }
@@ -461,11 +147,347 @@ namespace KamikyForms.Gui
 
 		public ICommand ApplyCommand { get; set; }
 
+		#region MVVM CurrentFilter
+
+		public bool HasSex
+		{
+			get { return _hasSex; }
+			set
+			{
+				if (_hasSex == value)
+					return;
+
+				_hasSex = value;
+
+				OnPropertyChanged();
+			}
+		}
+
+		public Sex Sex
+		{
+			get { return CurrentFilter.Sex.Value; }
+			set
+			{
+				if (CurrentFilter.Sex == value)
+					return;
+
+				CurrentFilter.Sex = value;
+			}
+		}
+
+		public bool HasYears
+		{
+			get { return _hasYears; }
+			set
+			{
+				if (_hasYears == value)
+					return;
+
+				_hasYears = value;
+				OnPropertyChanged();
+			}
+		}
+
+		public int YearsMin
+		{
+			get { return CurrentFilter.Years.Min; }
+			set
+			{
+				if (CurrentFilter.Years.Min == value)
+					return;
+
+				CurrentFilter.Years.Min = value;
+				OnPropertyChanged();
+			}
+		}
+
+		public int YearsMax
+		{
+			get { return CurrentFilter.Years.Max; }
+			set
+			{
+				if (CurrentFilter.Years.Max == value)
+					return;
+
+				CurrentFilter.Years.Max = value;
+				OnPropertyChanged();
+			}
+		}
+
+		public bool HasCountry
+		{
+			get { return _hasCountry; }
+			set
+			{
+				if (_hasCountry == value)
+					return;
+
+				_hasCountry = value;
+				OnPropertyChanged();
+			}
+		}
+
+		public bool HasCity
+		{
+			get { return _hasCity; }
+			set
+			{
+				if (_hasCity == value)
+					return;
+
+				_hasCity = value;
+				OnPropertyChanged();
+			}
+		}
+
+		public bool HasFamilyStatus
+		{
+			get { return _hasFamilyStatus; }
+			set
+			{
+				if (_hasFamilyStatus == value)
+					return;
+
+				_hasFamilyStatus = value;
+				OnPropertyChanged();
+			}
+		}
+
+		public MyFamilyStatus FamilyStatus
+		{
+			get { return CurrentFilter.FamilyStatus.Value; }
+			set {
+				if (CurrentFilter.FamilyStatus.Value == value)
+					return;
+
+				CurrentFilter.FamilyStatus = value;
+				OnPropertyChanged();
+			}
+		}
+
+		public bool IsOnline
+		{
+			get { return CurrentFilter.IsOnline.Value; }
+			set
+			{
+				if (CurrentFilter.IsOnline.Value == value)
+					return;
+
+				CurrentFilter.IsOnline = value;
+
+				OnPropertyChanged();
+			}
+		}
+
+		public bool HasPhoto
+		{
+			get { return CurrentFilter.HasPhoto.Value; }
+			set
+			{
+				if (CurrentFilter.HasPhoto.Value == value)
+					return;
+
+				CurrentFilter.HasPhoto = value;
+
+				OnPropertyChanged();
+			}
+		}
+
+
+		public bool HasSort
+		{
+			get { return _hasSort; }
+			set
+			{
+				if (_hasSort == value)
+					return;
+
+				_hasSort = value;
+
+				OnPropertyChanged();
+			}
+		}
+
+		public SearchSortBy Sort
+		{
+			get { return CurrentFilter.SortBy; }
+			set
+			{
+				if (CurrentFilter.SortBy == value)
+					return;
+
+				CurrentFilter.SortBy = value;
+
+				OnPropertyChanged();
+			}
+		}
+		
+		public bool HasFriendsCount
+		{
+			get { return _hasFriendsCount; }
+			set
+			{
+				if (_hasFriendsCount == value)
+					return;
+
+				_hasFriendsCount = value;
+
+				OnPropertyChanged();
+			}
+		}
+
+		public int FriendsCountMin
+		{
+			get { return CurrentFilter.FriendsCount.Min; }
+			set
+			{
+				if (CurrentFilter.FriendsCount.Min == value)
+					return;
+
+				CurrentFilter.FriendsCount.Min = value;
+
+				OnPropertyChanged();
+			}
+		}
+
+		public int FriendsCountMax
+		{
+			get { return CurrentFilter.FriendsCount.Max; }
+			set
+			{
+				if (CurrentFilter.FriendsCount.Max == value)
+					return;
+
+				CurrentFilter.FriendsCount.Max = value;
+
+				OnPropertyChanged();
+			}
+		}
+
+		
+		public bool HasSubsCount
+		{
+			get { return _hasSubsCount; }
+			set
+			{
+				if (_hasSubsCount == value)
+					return;
+
+				_hasSubsCount = value;
+
+				OnPropertyChanged();
+			}
+		}
+
+		public int SubsCountMin
+		{
+			get { return CurrentFilter.SubsCount.Min; }
+			set
+			{
+				if (CurrentFilter.SubsCount.Min == value)
+					return;
+
+				CurrentFilter.SubsCount.Min = value;
+
+				OnPropertyChanged();
+			}
+		}
+
+		public int SubsCountMax
+		{
+			get { return CurrentFilter.SubsCount.Max; }
+			set
+			{
+				if (CurrentFilter.SubsCount.Max == value)
+					return;
+
+				CurrentFilter.SubsCount.Max = value;
+
+				OnPropertyChanged();
+			}
+		}
+
+		
+
+		public bool HasPostsCount
+		{
+			get { return _hasPostsCount; }
+			set
+			{
+				if (_hasPostsCount == value)
+					return;
+
+				_hasPostsCount = value;
+
+				OnPropertyChanged();
+			}
+		}
+
+		public int PostsCountMin
+		{
+			get { return CurrentFilter.PostCount.Min; }
+			set
+			{
+				if (CurrentFilter.PostCount.Min == value)
+					return;
+
+				CurrentFilter.PostCount.Min = value;
+
+				OnPropertyChanged();
+			}
+		}
+
+		public int PostsCountMax
+		{
+			get { return CurrentFilter.PostCount.Max; }
+			set
+			{
+				if (CurrentFilter.PostCount.Max == value)
+					return;
+
+				CurrentFilter.PostCount.Max = value;
+
+				OnPropertyChanged();
+			}
+		}
+
+
+		public bool HasOffset
+		{
+			get { return _hasOffset; }
+			set
+			{
+				if (_hasOffset == value)
+					return;
+
+				_hasOffset = value;
+
+				OnPropertyChanged();
+			}
+		}
+
+		public int Offset
+		{
+			get { return CurrentFilter.Offset; }
+
+			set
+			{
+				if (CurrentFilter.Offset == value)
+					return;
+
+				CurrentFilter.Offset = value;
+
+				OnPropertyChanged();
+			}
+		}
+
+		#endregion
+
 		public FilterWindowViewModel()
 		{
-			UseServer = StaticVkContractManager.UseServer;
-
 			ApplyCommand = new ContractInterfaces.RelayCommand(ApplyCommandExecute);
+
+			UseServer = StaticVkContractManager.UseServer;
 
 			if (UseServer)
 			{

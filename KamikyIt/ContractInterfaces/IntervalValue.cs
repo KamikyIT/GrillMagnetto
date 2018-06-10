@@ -19,5 +19,16 @@ namespace ContractInterfaces
 				Max = this.Max,
 			};
 		}
+
+		public IntervalValue()
+		{
+			
+		}
+
+		public IntervalValue(T min, T max)
+		{
+			Min = min;
+			Max = max;
+		}
 	}
 }

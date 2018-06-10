@@ -124,22 +124,18 @@ namespace VkWcfServer
 			{
 				using (var ctx = new VkContext())
 				{
-					return ctx.VkSearchFilters.Select(x => new FilterModel()
+					var allFilters = new List<FilterModel>();
+
+					foreach (var x in ctx.VkSearchFilters)
 					{
-						Name = x.Name,
-						City = x.City,
-						Coutry = x.Coutry,
-						FamilyStatus = x.FamilyStatus,
-						FriendStatus = x.FriendStatus,
-						HasPhoto = x.HasPhoto,
-						IsOnline = x.IsOnline,
-						Sex = x.Sex,
-						Years = x.MinYear.HasValue && x.MaxYear.HasValue ? new IntervalValue<int>()
-						{
-							Min = x.MinYear.Value,
-							Max = x.MaxYear.Value,
-						} : null,
-					}).ToList();
+						var filter = new FilterModel(false);
+
+						VkSearchFilter.CopyToFilterModel(x, filter);
+
+						allFilters.Add(filter);
+					}
+
+					return allFilters;
 				}
 			}
 			catch (Exception e)
