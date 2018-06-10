@@ -75,6 +75,16 @@ namespace VkWcfServer
 		public int? MaxSubsCount { get; set; }
 
 		/// <summary>
+		/// Количество постов на стене.
+		/// </summary>
+		public int? MinPostsCount { get; set; }
+
+		/// <summary>
+		/// Количество постов на стене.
+		/// </summary>
+		public int? MaxPostsCount { get; set; }
+
+		/// <summary>
 		/// Оффсет в поиске.
 		/// </summary>
 		public int Offset { get; set; }
@@ -96,23 +106,7 @@ namespace VkWcfServer
 
 		public VkSearchFilter(FilterModel copy)
 		{
-			Name = copy.Name;
-			City = copy.City;
-			Coutry = copy.Coutry;
-			FamilyStatus = copy.FamilyStatus;
-			FirstContact = copy.FirstContact;
-			FriendStatus = copy.FriendStatus;
-			HasPhoto = copy.HasPhoto;
-			IsOnline = copy.IsOnline;
-			MinFriendsCount = copy.FriendsCount == null ? 0 : copy.FriendsCount.Min;
-			MaxFriendsCount = copy.FriendsCount == null ? 0 : copy.FriendsCount.Max;
-			MinSubsCount = copy.SubsCount == null ? 0 : copy.SubsCount.Min;
-			MaxSubsCount = copy.SubsCount == null ? 0 : copy.SubsCount.Max;
-			MinYear = copy.Years == null ? 0 : copy.Years.Min;
-			MaxYear = copy.Years == null ? 0 : copy.Years.Max;
-			Offset = copy.Offset;
-			Sex = copy.Sex;
-			SortBy = copy.SortBy;
+			this.CopyProps(copy);
 		}
 
 		public void CopyProps(FilterModel copy)
@@ -125,12 +119,14 @@ namespace VkWcfServer
 			FriendStatus = copy.FriendStatus;
 			HasPhoto = copy.HasPhoto;
 			IsOnline = copy.IsOnline;
-			MinFriendsCount = copy.FriendsCount == null ? 0 : copy.FriendsCount.Min;
-			MaxFriendsCount = copy.FriendsCount == null ? 0 : copy.FriendsCount.Max;
-			MinSubsCount = copy.SubsCount == null ? 0 : copy.SubsCount.Min;
-			MaxSubsCount = copy.SubsCount == null ? 0 : copy.SubsCount.Max;
-			MinYear = copy.Years == null ? 0 : copy.Years.Min;
-			MaxYear = copy.Years == null ? 0 : copy.Years.Max;
+			MinFriendsCount = copy.FriendsCount == null ? default(int?) : copy.FriendsCount.Min;
+			MaxFriendsCount = copy.FriendsCount == null ? default(int?) : copy.FriendsCount.Max;
+			MinSubsCount = copy.SubsCount == null ? default(int?) : copy.SubsCount.Min;
+			MaxSubsCount = copy.SubsCount == null ? default(int?) : copy.SubsCount.Max;
+			MinPostsCount = copy.PostCount == null ? default(int?) : copy.PostCount.Min;
+			MaxPostsCount = copy.PostCount == null ? default(int?) : copy.PostCount.Max;
+			MinYear = copy.Years == null ? default(int?) : copy.Years.Min;
+			MaxYear = copy.Years == null ? default(int?) : copy.Years.Max;
 			Offset = copy.Offset;
 			Sex = copy.Sex;
 			SortBy = copy.SortBy;
@@ -151,6 +147,9 @@ namespace VkWcfServer
 				: null;
 			filter.SubsCount = copy.MinSubsCount.HasValue && copy.MaxSubsCount.HasValue ?  new IntervalValue<int>(copy.MinSubsCount.Value, copy.MaxSubsCount.Value) : null;
 			filter.Years = copy.MinYear.HasValue && copy.MaxYear.HasValue ? new IntervalValue<int>(copy.MinYear.Value, copy.MaxYear.Value) : null;
+			filter.PostCount = copy.MinPostsCount.HasValue && copy.MaxPostsCount.HasValue
+				? new IntervalValue<int>(copy.MinPostsCount.Value, copy.MaxPostsCount.Value)
+				: null;
 			filter.Offset = copy.Offset;
 			filter.Sex = copy.Sex;
 			filter.SortBy = copy.SortBy;

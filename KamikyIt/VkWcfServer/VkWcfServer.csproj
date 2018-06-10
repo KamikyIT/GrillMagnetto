@@ -82,6 +82,10 @@
     <Compile Include="Migrations\201806071745414_V5.Designer.cs">
       <DependentUpon>201806071745414_V5.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806101739265_V6.cs" />
+    <Compile Include="Migrations\201806101739265_V6.Designer.cs">
+      <DependentUpon>201806101739265_V6.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="VkContext.cs" />
@@ -129,6 +133,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806071745414_V5.resx">
       <DependentUpon>201806071745414_V5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806101739265_V6.resx">
+      <DependentUpon>201806101739265_V6.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -129,6 +129,8 @@ namespace KamikyForms.Gui
 				HasSex = _currentFilter.Sex.HasValue;
 				OnPropertyChanged("Sex");
 
+				OnPropertyChanged("FamilyStatus");
+
 				HasYears = _currentFilter.Years != null;
 				OnPropertyChanged("YearsMin");
 				OnPropertyChanged("YearsMax");
@@ -287,7 +289,8 @@ namespace KamikyForms.Gui
 		public MyFamilyStatus FamilyStatus
 		{
 			get { return CurrentFilter.FamilyStatus.Value; }
-			set {
+			set
+			{
 				if (CurrentFilter.FamilyStatus.Value == value)
 					return;
 
