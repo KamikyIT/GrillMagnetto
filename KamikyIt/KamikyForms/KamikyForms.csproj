@@ -228,10 +228,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ConfigurationsProject\ConfigurationsProject.csproj">
-      <Project>{230036fc-d8d6-49c0-9749-2eef9d3ed515}</Project>
-      <Name>ConfigurationsProject</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ContractInterfaces\ContractInterfaces.csproj">
       <Project>{f786d996-5c10-4dfd-b50b-385d4973db82}</Project>
       <Name>ContractInterfaces</Name>
