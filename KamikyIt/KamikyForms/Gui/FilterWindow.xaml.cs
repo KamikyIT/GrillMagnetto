@@ -125,6 +125,37 @@ namespace KamikyForms.Gui
 				_currentFilter = value;
 
 				OnPropertyChanged();
+
+				HasSex = _currentFilter.Sex.HasValue;
+				OnPropertyChanged("Sex");
+
+				HasYears = _currentFilter.Years != null;
+				OnPropertyChanged("YearsMin");
+				OnPropertyChanged("YearsMax");
+
+				HasCountry = !string.IsNullOrEmpty(_currentFilter.Coutry);
+				HasCity = !string.IsNullOrEmpty(_currentFilter.City);
+
+				HasFamilyStatus = _currentFilter.FamilyStatus.HasValue;
+
+				OnPropertyChanged("IsOnline");
+				OnPropertyChanged("HasPhoto");
+				OnPropertyChanged("HasSort");
+
+				HasFriendsCount = _currentFilter.FriendsCount != null;
+				OnPropertyChanged("FriendsCountMin");
+				OnPropertyChanged("FriendsCountMax");
+
+				HasSubsCount = _currentFilter.SubsCount != null;
+				OnPropertyChanged("SubsCountMin");
+				OnPropertyChanged("SubsCountMax");
+
+				HasPostsCount = _currentFilter.PostCount != null;
+				OnPropertyChanged("PostsCountMin");
+				OnPropertyChanged("PostsCountMax");
+
+				HasOffset = _currentFilter.Offset == 0;
+				OnPropertyChanged("Offset");
 			}
 		}
 
@@ -293,7 +324,6 @@ namespace KamikyForms.Gui
 			}
 		}
 
-
 		public bool HasSort
 		{
 			get { return _hasSort; }
@@ -407,7 +437,6 @@ namespace KamikyForms.Gui
 			}
 		}
 
-		
 
 		public bool HasPostsCount
 		{
@@ -493,7 +522,11 @@ namespace KamikyForms.Gui
 			{
 				var contract = StaticVkContractManager.GetVkContractInstance();
 
-				AllFilters = new ObservableCollection<FilterModel>(contract.GetAllSearchFilters());
+				var allFilters = contract.GetAllSearchFilters();
+
+				FixAllFilters(allFilters);
+
+				AllFilters = new ObservableCollection<FilterModel>(allFilters);
 
 				AllFilters.Insert(0, new FilterModel()
 				{
@@ -507,6 +540,30 @@ namespace KamikyForms.Gui
 				CurrentFilter = new FilterModel();
 
 				AllFilters = new ObservableCollection<FilterModel>();
+			}
+		}
+
+		private void FixAllFilters(List<FilterModel> allFilters)
+		{
+			foreach (var filter in allFilters)
+			{
+				filter.HasPhoto = filter.HasPhoto.HasValue ? filter.HasPhoto.Value : false;
+
+				filter.IsOnline = filter.IsOnline.HasValue ? filter.IsOnline.Value : false;
+
+				filter.FamilyStatus = filter.FamilyStatus.HasValue ? filter.FamilyStatus.Value : MyFamilyStatus.Single;
+
+				filter.Sex = filter.Sex.HasValue ? filter.Sex.Value : Sex.Unknown;
+
+				filter.Years = filter.Years != null ? filter.Years : new IntervalValue<int>();
+
+				filter.FriendStatus = filter.FriendStatus.HasValue ? filter.FriendStatus.Value : FriendStatus.NotFriend;
+
+				filter.FriendsCount = filter.FriendsCount != null ? filter.FriendsCount : new IntervalValue<int>();
+
+				filter.PostCount = filter.PostCount != null ? filter.PostCount : new IntervalValue<int>();
+
+				filter.SubsCount = filter.SubsCount != null ? filter.SubsCount : new IntervalValue<int>();
 			}
 		}
 

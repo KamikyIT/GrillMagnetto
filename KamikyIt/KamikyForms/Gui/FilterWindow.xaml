@@ -99,7 +99,7 @@
 
                 <TextBlock Text="Фильтр : " Style="{StaticResource tBock}"/>
 
-                <ComboBox SelectedItem="{Binding Path=CurrentFilter}" ItemsSource="{Binding Path=AllFilters}" Style="{StaticResource tCombo}" x:Name="cbSelectedFilter"/>
+                <ComboBox SelectedItem="{Binding Path=CurrentFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Path=AllFilters}" Style="{StaticResource tCombo}" x:Name="cbSelectedFilter"/>
 
                 <TextBox IsEnabled="{Binding ElementName=cbSelectedFilter, Path=SelectedIndex, Converter={StaticResource TextBoxEnableSelectedFilterIndexConverter}}" Text="{Binding NewFilterName}" Width="300" Height="25" FontSize="15"/>
             </StackPanel>
@@ -122,15 +122,15 @@
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Canvas.Top="40" Canvas.Left="50">
-                    <CheckBox Style="{StaticResource cbPropChecker}" IsChecked="{Binding Path=HasYears, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="cminage"/>
+                    <CheckBox Style="{StaticResource cbPropChecker}" IsChecked="{Binding Path=HasYears, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="cage"/>
                     <TextBlock Text="Возраст Мин" TextAlignment="Right" Style="{StaticResource tBock}"/>
-                    <TextBox x:Name="minage" Text="{Binding Path=YearsMin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ttextboxNumber}" IsEnabled="{Binding ElementName=cminage, Path=IsChecked}"/>
+                    <TextBox x:Name="minage" Text="{Binding Path=YearsMin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ttextboxNumber}" IsEnabled="{Binding ElementName=cage, Path=IsChecked}"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Canvas.Top="70" Canvas.Left="50">
                     <CheckBox Style="{StaticResource cbPropChecker}" x:Name="cmaxage" Visibility="Hidden"/>
                     <TextBlock Text="Max" TextAlignment="Right" Style="{StaticResource tBock}"/>
-                    <TextBox x:Name="maxage" Text="{Binding Path=YearsMin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ttextboxNumber}" IsEnabled="{Binding ElementName=cminage, Path=IsChecked}"/>
+                    <TextBox x:Name="maxage" Text="{Binding Path=YearsMax, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ttextboxNumber}" IsEnabled="{Binding ElementName=cage, Path=IsChecked}"/>
                 </StackPanel>
 
 
