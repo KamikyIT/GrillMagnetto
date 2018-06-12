@@ -10,7 +10,8 @@
         WindowStartupLocation="CenterScreen"
                  Icon="/Resources/vk_logo.png"
                  WindowTitleBrush="#4c75a3"  
-        Title="Поиск" Height="670" Width="900">
+        Title="Поиск" Height="670" Width="900"
+                 x:Name="FilterWindowElement">
     
     <Window.DataContext>
         <local:FilterWindowViewModel/>
@@ -248,10 +249,10 @@
                 </StackPanel>
 
 
-                <Button Style="{StaticResource btn}" Command="{Binding SearchCommand}" Canvas.Top ="480" Canvas.Left="72" Click="onSearch" >Найти</Button>
-                <Button Style="{StaticResource btn}" Command="{Binding ChooseCommand}" Canvas.Top ="480" Canvas.Left="356" Click="onSelect" >Выбрать</Button>
+                <Button Style="{StaticResource btn}" Command="{Binding SearchCommand}" Canvas.Top ="480" Canvas.Left="72">Найти</Button>
+                <Button Style="{StaticResource btn}" Command="{Binding ChooseCommand}" Canvas.Top ="480" Canvas.Left="356">Выбрать</Button>
 
-                <Button Style="{StaticResource btn}" Command="{Binding ApplyCommand}" Canvas.Top ="480" Canvas.Left="672" Click="onApply" >Применить</Button>
+                <Button Style="{StaticResource btn}" Command="{Binding ApplyCommand}" CommandParameter="{Binding ElementName=FilterWindowElement}" Canvas.Top ="480" Canvas.Left="672">Применить</Button>
                 <Label Content="{Binding FoundPeoplesString, UpdateSourceTrigger=PropertyChanged}" Canvas.Top ="560" Canvas.Left="104" Foreground="AliceBlue"/>
                 <Label Content="{Binding ChosenPeoplesString, UpdateSourceTrigger=PropertyChanged}" Canvas.Top ="560" Canvas.Left="380" Foreground="AliceBlue"/>
             </Canvas>

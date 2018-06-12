@@ -55,35 +55,6 @@ namespace KamikyForms.Gui
 		public List<PersonModel> persons = new List<PersonModel>();
 		public List<PersonModel> choosenpersons = new List<PersonModel>();
 
-		private void onSearch(object sender, RoutedEventArgs e)
-		{
-			return;
-
-			//var filter = new SearchFilter();
-			//List<PersonModel> peoples = SearchInstrument.getPersons(filter);
-			//persons = peoples;
-			//UpdateUi();
-		}
-
-		private void onSelect(object sender, RoutedEventArgs e)
-		{
-			return;
-
-			//PreparePersonsForm form = new PreparePersonsForm(persons);
-			//var res = form.ShowDialog();
-			//if (res == true)
-			//{
-			//	choosenpersons = form.pl2;
-			//	UpdateUi();
-			//}
-		}
-
-		private void onApply(object sender, RoutedEventArgs e)
-		{
-			DialogResult = true;
-		}
-
-
 		private void AllowNumbersTextBox(object sender, TextChangedEventArgs e)
 		{
 			var tb = (sender as TextBox);
@@ -92,7 +63,7 @@ namespace KamikyForms.Gui
 		}
 	}
 
-	public class FilterWindowViewModel : ViewModelNotifyPropertyChanged
+	public class FilterWindowViewModel : ViewModelNotifyPropertyChanged, IDialogViewModel
 	{
 		private FilterModel _currentFilter;
 		private string _newFilterName;
@@ -598,6 +569,11 @@ namespace KamikyForms.Gui
 				else
 					contract.UpdateSearchFilter(toSendFilter);
 			}
+
+			DialogResult = true;
+
+			var window = obj as Window;
+			if (window != null) window.Close();
 		}
 
 		private void SearchCommandExecute(object obj)
@@ -639,6 +615,12 @@ namespace KamikyForms.Gui
 		}
 
 		private const string NewFilterNameConst = "Новый фильтр";
+		public bool DialogResult { get; set; }
+
+		public List<PersonModel> GetChoosenPersons()
+		{
+			return _chosenPeoples;
+		}
 	}
 
 	public class TextBoxEnableSelectedFilterIndexConverter :IValueConverter

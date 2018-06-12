@@ -13,6 +13,7 @@ using Chat.Core;
 using MahApps.Metro.Controls;
 using System.Threading;
 using System.Windows.Documents;
+using KamikyForms;
 using KamikyForms.Bot;
 using KamikyForms.Core;
 using KamikyForms.Gui;
@@ -401,19 +402,20 @@ namespace Chat.Gui
 
         private void onSearch(object sender, RoutedEventArgs e)
         {
-            FilterWindow form = new FilterWindow();
-            var res = form.ShowDialog();
-            if (res == true && form.choosenpersons.Count > 0)
-            {
-                Persons = form.choosenpersons;
-                FillPersons();
-                stage = StageEnum.CHOSEN;
+	        var resPair = DialogService.ShowDialog<FilterWindow, FilterWindowViewModel>(new FilterWindow());
 
+	        if (!resPair.Key) return;
 
-            }
-        }
+	        var viewModel = resPair.Value;
 
-        private void onUpdateAll(object sender, RoutedEventArgs e)
+	        Persons = viewModel.GetChoosenPersons();
+
+	        FillPersons();
+
+	        stage = StageEnum.CHOSEN;
+		}
+
+		private void onUpdateAll(object sender, RoutedEventArgs e)
         {
             te.updateAllChats();
 
