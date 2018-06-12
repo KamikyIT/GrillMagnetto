@@ -555,13 +555,13 @@ namespace KamikyForms.Gui
 				if (!HasSex)
 					toSendFilter.Sex = default(Sex?);
 
-				if (!HasSubsCount)
+				if (!HasSubsCount || CurrentFilter.SubsCount == null || CurrentFilter.SubsCount == new IntervalValue<int>())
 					toSendFilter.SubsCount = null;
 
 				if (!HasFamilyStatus)
 					toSendFilter.FamilyStatus = default(MyFamilyStatus?);
 
-				if (!HasFriendsCount)
+				if (!HasFriendsCount || CurrentFilter.FriendsCount == null || CurrentFilter.FriendsCount == new IntervalValue<int>())
 					toSendFilter.FriendsCount = null;
 
 				if (toSendFilter.Name == NewFilterNameConst)
@@ -586,13 +586,13 @@ namespace KamikyForms.Gui
 			if (!HasSex)
 				toSendFilter.Sex = default(Sex?);
 
-			if (!HasSubsCount)
+			if (!HasSubsCount || CurrentFilter.SubsCount == null || CurrentFilter.SubsCount == new IntervalValue<int>())
 				toSendFilter.SubsCount = null;
 
 			if (!HasFamilyStatus)
 				toSendFilter.FamilyStatus = default(MyFamilyStatus?);
 
-			if (!HasFriendsCount)
+			if (!HasFriendsCount || CurrentFilter.FriendsCount == null || CurrentFilter.FriendsCount == new IntervalValue<int>())
 				toSendFilter.FriendsCount = null;
 
 			_foundPeoples = SearchInstrument.GetPersons(toSendFilter);
