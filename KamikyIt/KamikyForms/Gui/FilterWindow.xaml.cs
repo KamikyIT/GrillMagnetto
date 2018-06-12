@@ -539,10 +539,27 @@ namespace KamikyForms.Gui
 			{
 				var contract = StaticVkContractManager.GetVkContractInstance();
 
-				if (CurrentFilter.Name == NewFilterNameConst)
-					contract.AddSearchFilter(CurrentFilter, NewFilterName);
+				var toSendFilter = CurrentFilter.CopyFilter();
+
+				if (!HasYears)
+					toSendFilter.Years = null;
+
+				if (!HasSex)
+					toSendFilter.Sex = default(Sex?);
+
+				if (!HasSubsCount)
+					toSendFilter.SubsCount = null;
+
+				if (!HasFamilyStatus)
+					toSendFilter.FamilyStatus = default(MyFamilyStatus?);
+
+				if (!HasFriendsCount)
+					toSendFilter.FriendsCount = null;
+
+				if (toSendFilter.Name == NewFilterNameConst)
+					contract.AddSearchFilter(toSendFilter, NewFilterName);
 				else
-					contract.UpdateSearchFilter(CurrentFilter);
+					contract.UpdateSearchFilter(toSendFilter);
 			}
 		}
 
