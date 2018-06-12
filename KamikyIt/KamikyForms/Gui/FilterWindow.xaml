@@ -248,12 +248,12 @@
                 </StackPanel>
 
 
-                <Button Style="{StaticResource btn}" Canvas.Top ="480" Canvas.Left="72" Click="onSearch" >Найти</Button>
-                <Button Style="{StaticResource btn}" Canvas.Top ="480" Canvas.Left="356" Click="onSelect" >Выбрать</Button>
+                <Button Style="{StaticResource btn}" Command="{Binding SearchCommand}" Canvas.Top ="480" Canvas.Left="72" Click="onSearch" >Найти</Button>
+                <Button Style="{StaticResource btn}" Command="{Binding ChooseCommand}" Canvas.Top ="480" Canvas.Left="356" Click="onSelect" >Выбрать</Button>
 
                 <Button Style="{StaticResource btn}" Command="{Binding ApplyCommand}" Canvas.Top ="480" Canvas.Left="672" Click="onApply" >Применить</Button>
-                <Label x:Name="finded" Canvas.Top ="560" Canvas.Left="104" Foreground="AliceBlue">Найдено: 0</Label>
-                <Label x:Name="chosen" Canvas.Top ="560" Canvas.Left="380" Foreground="AliceBlue">Выбрано: 0</Label>
+                <Label Content="{Binding FoundPeoplesString, UpdateSourceTrigger=PropertyChanged}" Canvas.Top ="560" Canvas.Left="104" Foreground="AliceBlue"/>
+                <Label Content="{Binding ChosenPeoplesString, UpdateSourceTrigger=PropertyChanged}" Canvas.Top ="560" Canvas.Left="380" Foreground="AliceBlue"/>
             </Canvas>
         </Canvas>
     </Grid>

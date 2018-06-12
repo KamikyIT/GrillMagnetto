@@ -36,6 +36,8 @@ namespace ApiWrapper.Core
 	    {
 		    UserSearchParams userSearchParams = ConverToVkUserSearchParams(filter);
 
+		    userSearchParams.Fields = ProfileFields.All | ProfileFields.Counters;
+
 		    var peoples = api.Users.Search(userSearchParams);
 
 		    var unbannedUsers = peoples.Where(x => !Bans.Contains(x.Domain));
@@ -44,38 +46,58 @@ namespace ApiWrapper.Core
 
 		    var niceGrills = canWrite.Where(x => IsNormalGrill(x));
 
-		    var myFilteredPeople = niceGrills;
+		    var myFilteredPeople = niceGrills.ToList();
+
+			// Если не задали условия по количеству друзей и падпинчикиов.
+		    if (filter.FriendsCount == null && filter.SubsCount == null)
+			    return myFilteredPeople.Select(x => new PersonModel(x)).ToList();
 
 
-			if (filter.FriendsCount != null)
+		    // Иначе молиться Богам, чтобы нас не зобанили.
+			var userCounters = new Dictionary<User, Counters>();
+
+		    foreach (var ppl in myFilteredPeople)
 		    {
-			    myFilteredPeople = myFilteredPeople.Where(x => 
-					x.Counters.Friends.HasValue
-						? x.Counters.Friends.Value >= filter.FriendsCount.Min 
-						: true);
+			    var counters = api.Users.Get(new long[] {ppl.Id}, ProfileFields.Counters).FirstOrDefault().Counters;
 
-				myFilteredPeople = myFilteredPeople.Where(x => 
-					x.Counters.Friends.HasValue
-						? x.Counters.Friends.Value <= filter.FriendsCount.Max
-						: true);
-			}
+			    userCounters.Add(ppl, counters);
+		    }
+
+		    foreach (var userCounter in userCounters)
+			    userCounter.Key.Counters = userCounter.Value;
+
+		    myFilteredPeople = userCounters.Keys.ToList();
+
+		    IEnumerable<User> users = myFilteredPeople;
+
+
+		    if (filter.FriendsCount != null)
+		    {
+			    users = users.Where(x =>
+				    x.Counters.Friends.HasValue
+					    ? x.Counters.Friends.Value >= filter.FriendsCount.Min
+					    : true);
+
+			    users = users.Where(x =>
+				    x.Counters.Friends.HasValue
+					    ? x.Counters.Friends.Value <= filter.FriendsCount.Max
+					    : true);
+		    }
 
 		    if (filter.SubsCount != null)
 		    {
-			    myFilteredPeople = myFilteredPeople.Where(x =>
+			    users = users.Where(x =>
 				    x.Counters.Followers.HasValue
 					    ? x.Counters.Followers.Value >= filter.SubsCount.Min
 					    : true);
 
-			    myFilteredPeople = myFilteredPeople.Where(x =>
+			    users = users.Where(x =>
 				    x.Counters.Followers.HasValue
 					    ? x.Counters.Followers.Value <= filter.SubsCount.Max
 					    : true);
-			}
+		    }
 
-		    myFilteredPeople = myFilteredPeople.Where(x => x.Counters.MutualFriends <= filter.CommonFriends);
-
-			return myFilteredPeople.Select(x => new PersonModel(x)).ToList();
+		    return users.Select(x => new PersonModel(x)).ToList();
 	    }
 
 	    private static UserSearchParams ConverToVkUserSearchParams(FilterModel filter)
@@ -84,15 +106,16 @@ namespace ApiWrapper.Core
 		    {
 			    AgeFrom = filter.Years != null ? (ushort) filter.Years.Min : default(ushort?),
 			    AgeTo = filter.Years != null ? (ushort) filter.Years.Max : default(ushort?),
-			    City = !string.IsNullOrEmpty(filter.City) ? GetCityId(filter.City) : default(int?),
+			    Country = GetCountryId(filter.Coutry), //!string.IsNullOrEmpty(filter.Coutry) ? GetCountryId(filter.Coutry) : default(int?),
+			    City = GetCityId(filter.City), // !string.IsNullOrEmpty(filter.City) ? GetCityId(filter.City) : default(int?),
 			    Sex = filter.Sex.HasValue ? (VkNet.Enums.Sex) filter.Sex : Sex.Unknown,
 			    HasPhoto = filter.HasPhoto,
 			    Online = filter.IsOnline,
 			    Offset = (uint) filter.Offset,
-			    Country = !string.IsNullOrEmpty(filter.Coutry) ? GetCountryId(filter.Coutry) : default(int?),
 			    Status = filter.FamilyStatus.HasValue
 				    ? (MaritalStatus) ((int) filter.FamilyStatus.Value)
 				    : default(MaritalStatus?),
+				Count = 1000,
 		    };
 
 			if (filter.SortBy != SearchSortBy.None)

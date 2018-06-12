@@ -67,19 +67,15 @@ namespace KamikyForms.Gui
 
 		private void onSelect(object sender, RoutedEventArgs e)
 		{
-			PreparePersonsForm form = new PreparePersonsForm(persons);
-			var res = form.ShowDialog();
-			if (res == true)
-			{
-				choosenpersons = form.pl2;
-				UpdateUi();
-			}
-		}
+			return;
 
-		public void UpdateUi()
-		{
-			finded.Content = "Найдено : " + persons.Count;
-			chosen.Content = "Выбрано : " + choosenpersons.Count;
+			//PreparePersonsForm form = new PreparePersonsForm(persons);
+			//var res = form.ShowDialog();
+			//if (res == true)
+			//{
+			//	choosenpersons = form.pl2;
+			//	UpdateUi();
+			//}
 		}
 
 		private void onApply(object sender, RoutedEventArgs e)
@@ -110,6 +106,10 @@ namespace KamikyForms.Gui
 		private bool _hasFriendsCount;
 		private bool _hasSubsCount;
 		private bool _hasOffset;
+		private string _foundPeoplesString;
+		private string _chosenPeoplesString;
+		private List<PersonModel> _foundPeoples;
+		private List<PersonModel> _chosenPeoples;
 
 		public FilterModel CurrentFilter
 		{
@@ -174,6 +174,39 @@ namespace KamikyForms.Gui
 		public bool UseServer { get; set; }
 
 		public ICommand ApplyCommand { get; set; }
+
+		public ICommand SearchCommand { get; set; }
+
+		public ICommand ChooseCommand { get; set; }
+
+		public string FoundPeoplesString
+		{
+			get { return _foundPeoplesString; }
+			set
+			{
+				if (_foundPeoplesString == value)
+					return;
+
+				_foundPeoplesString = value;
+
+				OnPropertyChanged();
+			}
+		}
+
+		public string ChosenPeoplesString
+		{
+			get { return _chosenPeoplesString; }
+			set
+			{
+				if (_chosenPeoplesString == value)
+					return;
+
+				_chosenPeoplesString = value;
+
+				OnPropertyChanged();
+			}
+		}
+
 
 		#region MVVM CurrentFilter
 
@@ -482,7 +515,11 @@ namespace KamikyForms.Gui
 
 		public FilterWindowViewModel()
 		{
-			ApplyCommand = new ContractInterfaces.RelayCommand(ApplyCommandExecute);
+			ApplyCommand = new RelayCommand(ApplyCommandExecute);
+
+			SearchCommand = new RelayCommand(SearchCommandExecute);
+
+			ChooseCommand = new RelayCommand(ChooseCommandExecute, (obj) => _foundPeoples != null && _foundPeoples.Any());
 
 			UseServer = StaticVkContractManager.UseServer;
 
@@ -561,6 +598,44 @@ namespace KamikyForms.Gui
 				else
 					contract.UpdateSearchFilter(toSendFilter);
 			}
+		}
+
+		private void SearchCommandExecute(object obj)
+		{
+			var toSendFilter = CurrentFilter.CopyFilter();
+
+			if (!HasYears)
+				toSendFilter.Years = null;
+
+			if (!HasSex)
+				toSendFilter.Sex = default(Sex?);
+
+			if (!HasSubsCount)
+				toSendFilter.SubsCount = null;
+
+			if (!HasFamilyStatus)
+				toSendFilter.FamilyStatus = default(MyFamilyStatus?);
+
+			if (!HasFriendsCount)
+				toSendFilter.FriendsCount = null;
+
+			_foundPeoples = SearchInstrument.GetPersons(toSendFilter);
+
+			FoundPeoplesString = string.Format("Найдено : {0}", _foundPeoples != null ? _foundPeoples.Count : 0);
+
+			ChosenPeoplesString = string.Format("Выбрано : {0}", 0);
+		}
+
+		private void ChooseCommandExecute(object obj)
+		{
+			var form = new PreparePersonsForm(_foundPeoples);
+
+			if (form.ShowDialog() == false)
+				return;
+
+			_chosenPeoples = form.pl2;
+
+			ChosenPeoplesString = string.Format("Выбрано : {0}", _chosenPeoples.Count);
 		}
 
 		private const string NewFilterNameConst = "Новый фильтр";
